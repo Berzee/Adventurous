@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Adventurous Project Template</title>
+    <script src="astar.js"></script>
+    <script src="graph.js"></script>
+	<script src="phaser.js"></script>
+	<script src="Boot.js"></script>
+    <script src="Constants.js"></script>
+	<script src="Preloader.js"></script>
+	<script src="MainMenu.js"></script>
+	<script src="Game.js"></script>
+    <script src="Scene.js"></script>
+    <script src="Thing.js"></script>
+    <script src="TriggerArea.js"></script>
+    <script src="Speech.js"></script>
+    <script src="Inventory.js"></script>
+    <script src="PauseMenu.js"></script>
+    <script src="Cursor.js"></script>
+    <script src="Conversation.js"></script>
+    <script src="Interactions.js"></script>
+    <script src="Effects.js"></script>
+    <script src="Observations.js"></script>
+    <script src="Util.js"></script>
+    <script src="Loader.js"></script>
+    <style>
+        canvas{cursor:none !important;}
+        @font-face {
+          font-family: 'AdventurousFont';
+          font-style: normal;
+          font-weight: 400;
+          src: local('AdventurousFont'), local('AdventurousFont'), url(fonts/AlteHaasGroteskBold.woff) format('woff');
+        }
+    </style>
+</head>
+<body>
+<p style="font-family:AdventurousFont;position:absolute;left:-100px;">.</p>
+<div id="gameContainer"></div>
+
+<script type="text/javascript">
+
+var game;
+var currentState; //for easy access when debugging
+    
+window.onload = function() {
+
+	//	Create your Phaser game and inject it into the gameContainer div.
+	//	We did it in a window.onload event, but you can do it anywhere (requireJS load, anonymous function, jQuery dom ready, - whatever floats your boat)
+	game = new Phaser.Game(640, 480, Phaser.CANVAS, 'gameContainer');
+    
+	//	Add the States your game has.
+	//	You don't have to do this in the html, it could be done in your Boot state too, but for simplicity I'll keep it here.
+	game.state.add('Boot', Adventurous.Boot);
+	game.state.add('Preloader', Adventurous.Preloader);
+	game.state.add('MainMenu', Adventurous.MainMenu);
+	game.state.add('Game', Adventurous.Game);
+
+	//	Now start the Boot state.
+	game.state.start('Boot');
+    
+    disableContextMenu();
+};
+
+var disableContextMenu = function()
+{
+    window.addEventListener('contextmenu', function(e)
+    {
+        e.preventDefault();
+        return false;
+    }); 
+}
+</script>
+
+</body>
+</html>
