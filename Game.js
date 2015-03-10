@@ -66,12 +66,28 @@ Adventurous.Game.prototype =
         this.cursor = new Adventurous.Cursor();
         
         game.input.onDown.add(this.mouseDown, this);
-        this.showScene(Adventurous.startingScene);
+        if(Adventurous.gameToLoad != null)
+        {
+            Adventurous.Util.load(Adventurous.gameToLoad);
+            Adventurous.gameToLoad = null;
+        }
+        else
+        {
+            this.showScene(Adventurous.startingScene);
+        }
 	},
     
     mouseDown: function(pointer)
     {
-        if(this.activeEffects != null)
+        if(this.pauseMenu.background.visible)
+        {
+            this.pauseMenu.mouseDown(pointer);
+        }
+        else if(this.inventory.background.visible)
+        {
+            this.inventory.mouseDown(pointer);
+        }
+        else if(this.activeEffects != null)
         {
             //only accept cancellation of talking effects
             for(var i = 0; i < this.activeEffects.effects.length; i++)
@@ -83,20 +99,12 @@ Adventurous.Game.prototype =
                 }
             }
         }
-        else if(this.pauseMenu.background.visible)
-        {
-            this.pauseMenu.mouseDown(pointer);
-        }
-        else if(this.inventory.background.visible)
-        {
-            this.inventory.mouseDown(pointer);
-        }
         else if(this.currentConversation != null)
         {
             for(var i = 3; i < this.dialogueGroup.length; i++) //starts at 3 because the first three elements in the group are the background, up, and down buttons
             {
                 var label = this.dialogueGroup.getAt(i);
-                if(Adventurous.Util.isMouseOverLabel(label))
+                if(Adventurous.Util.isMouseOverObject(label))
                 {
                     this.currentConversation.choose(i-3+this.dialogueGroupStartIndex);
                     this.currentConversation.doDialogue();
@@ -142,7 +150,7 @@ Adventurous.Game.prototype =
                     if(this.cursor.item == null)
                     {
                         this.player.stopTalking();
-                        this.player.stopMoving();
+                        this.player.stopMoving(true);
                         this.thingUnderMouse.label.visible = false;
                         this.player.face(this.thingUnderMouse);
                         this.player.say(this.thingUnderMouse.observations.next());
@@ -254,7 +262,7 @@ Adventurous.Game.prototype =
         for(var i = 3; i < this.dialogueGroup.length; i++) //starts at 3 because the first three elements in the group are the background, up, and down buttons
         {
             var label = this.dialogueGroup.getAt(i);
-            if(Adventurous.Util.isMouseOverLabel(label))
+            if(Adventurous.Util.isMouseOverObject(label))
             {
                 label.setStyle(Adventurous.Constants.SELECTED_DIALOGUE_LABEL_STYLE);
             }
@@ -430,7 +438,7 @@ Adventurous.Game.prototype =
         this.thingsGroup.bringToTop(this.player.sprite);
         for(var i = 0; i < this.scene.things.length; i++)
         {
-            if(this.scene.things[i].startHidden != true)
+            if(this.scene.things[i].startHidden != true && this.scene.things[i].hasBeenHidden != true)
             {
                 this.scene.things[i].show();
             }
@@ -440,18 +448,16 @@ Adventurous.Game.prototype =
         
         this.dialogueGroup.removeAll();
         
-        //TODO -- it would be nice if the labels didn't need to be recreated every time we load a scene,
-        //but currently that's how we keep the labels in the foreground
         for(var i = 0; i < this.scene.things.length; i++)
         {
             if(this.scene.things[i].label != null)
             {
-                this.scene.things[i].label.destroy();
-                this.scene.things[i].createLabel();
+                this.scene.things[i].bringLabelsToTop();
             }
         }
-        this.player.label.destroy();
-        this.player.createLabel();
+        this.player.bringLabelsToTop();
+        
+        this.pauseMenu.bringToTop();
         
         if(entranceName != null)
         {
@@ -503,6 +509,9 @@ Adventurous.Game.prototype =
     loadFromObject: function(obj)
     {
         Adventurous.flags = obj.flags;
+        Adventurous.options = obj.options;
+        this.pauseMenu.soundVolumeSlider.setValue(Adventurous.options.soundVolume);
+        this.pauseMenu.musicVolumeSlider.setValue(Adventurous.options.musicVolume);
         for(var i = 0; i < obj.data.scenes.length; i++)
         {
             Adventurous.scenes[obj.data.scenes[i].name].loadFromObject(obj.data.scenes[i]);

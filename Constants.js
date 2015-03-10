@@ -18,6 +18,8 @@ Adventurous.Constants =
     DIALOGUE_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#ffffee", align: "left", wordWrapWidth: 600, wordWrap: true },
     SELECTED_DIALOGUE_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#ffff77", align: "left", wordWrapWidth: 600, wordWrap: true  },
     DISABLED_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#dddddd", align: "left", wordWrapWidth: 600, wordWrap: true },
+    MAIN_MENU_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#000000", align: "left", wordWrapWidth: 600, wordWrap: true },
+    SELECTED_MAIN_MENU_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#555555", align: "left", wordWrapWidth: 600, wordWrap: true  },
     LINE_HEIGHT: 25,
     
     LMB : 0,
@@ -52,6 +54,7 @@ Adventurous.Constants =
     ACTION_STOP_ROUTINE: "StopRoutine",
     ACTION_START_ROUTINE: "StartRoutine",
     ACTION_SET_FLAG: "setFlag",
+    ACTION_FADEOUT : "Fadeout",
     ACTION_CONV_HIDE_CHOICE: "conv_hideChoice",
     ACTION_CONV_RESET_CHOICES: "conv_resetChoices",
     ACTION_CONV_QUIT: "conv_quit",
@@ -71,4 +74,6 @@ Adventurous.Constants =
     
     PAUSE_MENU_FIRST_ITEM_Y_POS: 60,
     PAUSE_MENU_LINE_HEIGHT: 60,
+    MAIN_MENU_FIRST_ITEM_Y_POS: 210,
+    MAIN_MENU_LINE_HEIGHT: 60
 }

@@ -130,6 +130,7 @@ Adventurous.Effects.prototype =
             case Adventurous.Constants.ACTION_HIDE:
                 this.assignTargetToEffect(effect,this.user.destinationThing);
                 effect.target.hide();
+                effect.target.hasBeenHidden = true;
                 break;
                 
             case Adventurous.Constants.ACTION_SHOW:
@@ -173,6 +174,12 @@ Adventurous.Effects.prototype =
                 
             case Adventurous.Constants.ACTION_SCENE:
                 currentState.switchToScene(effect.scene,effect.entrance);
+                break;
+                
+            case Adventurous.Constants.ACTION_FADEOUT:
+                effect.graphics = game.add.graphics(0, 0);  
+                effect.graphics.beginFill(parseInt(effect.color.substring(1)));
+                effect.graphics.fillAlpha = 0;
                 break;
                 
             case Adventurous.Constants.ACTION_TALK:
@@ -374,6 +381,23 @@ Adventurous.Effects.prototype =
                         effect.target.moveSpeed = effect.target.CURRENT_MOVE_SPEED * effect.target.sprite.scale.x;
                     }
                     return effect.target.destination == null;
+                    break;
+                    
+                case Adventurous.Constants.ACTION_FADEOUT:
+                    if(effect.graphics.fillAlpha >= 1)
+                    {
+                        effect.graphics.clear();
+                        effect.graphics.fillAlpha = 1;
+                        effect.graphics.drawRect(0,0,game.width,game.height);
+                        return true;
+                    }
+                    else
+                    {
+                        effect.graphics.clear();
+                        effect.graphics.drawRect(0,0,game.width,game.height);
+                        effect.graphics.fillAlpha += currentState.time.elapsed/effect.time;
+                        return false;
+                    }
                     break;
                     
                 default:

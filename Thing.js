@@ -127,6 +127,7 @@ Adventurous.Thing = function (obj)
     this.tempVelocityY;
     
     this.startHidden = obj.startHidden;
+    this.hasBeenHidden = false;
     this.isBackground = obj.isBackground;
     this.isForeground = obj.isForeground;
     
@@ -148,6 +149,10 @@ Adventurous.Thing = function (obj)
     this.startingRoutine = obj.startingRoutine;
     
     this.automateWalkAnimation = true;
+    
+    this.talkTime = 0;
+    
+    this.dialogueTime = Adventurous.Constants.dialogueTime;
     
     this.hide();
 };
@@ -191,9 +196,13 @@ Adventurous.Thing.prototype =
             {
                 if(!this.currentSpeech.audio.isPlaying)
                 {
-                    if(game.time.now - this.currentSpeech.audio.startTime > Adventurous.Constants.DIALOGUE_MIN_TIME)
+                    if(this.talkTime > this.dialogueTime)
                     {
                         this.stopTalking();
+                    }
+                    else
+                    {
+                        this.talkTime += game.time.elapsed;
                     }
                 }
             }
@@ -290,32 +299,36 @@ Adventurous.Thing.prototype =
     
     face: function(target)
     {
-        var x = target.sprite.x - this.sprite.x;
-        var y = target.sprite.y - this.sprite.y;
-        
-        if(Math.abs(x) >= Math.abs(y))
+        var anim = this.sprite.animations.currentAnim.name;
+        if(anim.indexOf("walk") == 0 || anim.indexOf("idle") == 0)
         {
-            if(x >= 0)
+            var x = target.sprite.x - this.sprite.x;
+            var y = target.sprite.y - this.sprite.y;
+            
+            if(Math.abs(x) >= Math.abs(y))
             {
-                this.dirAnim = "E";
+                if(x >= 0)
+                {
+                    this.dirAnim = "E";
+                }
+                else
+                {
+                    this.dirAnim = "W";
+                }
             }
             else
             {
-                this.dirAnim = "W";
+                if(y >= 0)
+                {
+                    this.dirAnim = "S";
+                }
+                else
+                {
+                    this.dirAnim = "N";
+                }
             }
+            this.sprite.play(Adventurous.Constants.ANIM_IDLE+this.dirAnim);
         }
-        else
-        {
-            if(y >= 0)
-            {
-                this.dirAnim = "S";
-            }
-            else
-            {
-                this.dirAnim = "N";
-            }
-        }
-        this.sprite.play(Adventurous.Constants.ANIM_IDLE+this.dirAnim);
     },
     
     getFacing: function()
@@ -406,8 +419,6 @@ Adventurous.Thing.prototype =
         }
     },
     
-    //"createLabel" is called by Game state after all objects are added to the screen
-    //(so the labels are at the end of game.world.children and don't mess up depth sorting of sprites)
     createLabel: function()
     {
          this.label = game.add.group();
@@ -500,7 +511,14 @@ Adventurous.Thing.prototype =
         this.animBeforeTalking = this.sprite.animations.currentAnim.name;
         if(anim == null)
         {
-            anim = "say"+this.getFacing();
+            if(this.animBeforeTalking.indexOf("idle") == -1 && this.animBeforeTalking.indexOf("walk") == -1)
+            {
+                anim = this.animBeforeTalking+"Talk";
+            }
+            else
+            {
+                anim = "say"+this.getFacing();
+            }
         }
         this.talking = true;
         this.currentSpeech = speech;
@@ -514,14 +532,20 @@ Adventurous.Thing.prototype =
             this.setLabelText('\"'+speech.text+'\"',this.label);
             this.showLabel(this.label);
         }
-        speech.audio.play();
-        speech.audio.startTime = game.time.now;
+        speech.audio.play('',0,Adventurous.options.soundVolume);
+        this.talkTime = 0;
+        this.dialogueTime = Adventurous.Util.calculateDialogueMinTime(speech.text);
         this.destinationThing = null;
-        this.sprite.animations.play(anim);
+        if(anim != null && this.sprite.animations.getAnimation(Adventurous.Constants.ANIM_IDLE+this.getFacing()) != null)
+        {
+            this.sprite.animations.play(anim);
+        }
+            
     },
     
     stopTalking: function()
     {
+        this.talkTime = 0;
         if(this.currentSpeech)
         {
             this.currentSpeech.audio.stop();
@@ -538,7 +562,7 @@ Adventurous.Thing.prototype =
         this.animBeforeTalking = null;
     },
     
-    stopMoving: function()
+    stopMoving: function(continueCustomAnimation)
     {
         this.sprite.body.velocity.x = 0;
         this.sprite.body.velocity.y = 0;
@@ -549,13 +573,18 @@ Adventurous.Thing.prototype =
         this.waypoints = null;
         this.destination = null;
         this.destinationThing = null;
-        if(this.sprite.animations.getAnimation(Adventurous.Constants.ANIM_IDLE+this.getFacing()))
+        
+        var anim = this.sprite.animations.currentAnim.name;
+        if(continueCustomAnimation != true || anim.indexOf("walk") == 0 || anim.indexOf("idle") == 0)
         {
-            this.sprite.animations.play(Adventurous.Constants.ANIM_IDLE+this.getFacing());
-        }
-        else
-        {
-            this.sprite.animations.play(Adventurous.Constants.ANIM_IDLE);
+            if(this.sprite.animations.getAnimation(Adventurous.Constants.ANIM_IDLE+this.getFacing()))
+            {
+                this.sprite.animations.play(Adventurous.Constants.ANIM_IDLE+this.getFacing());
+            }
+            else
+            {
+                this.sprite.animations.play(Adventurous.Constants.ANIM_IDLE);
+            }
         }
     },
     
@@ -608,7 +637,10 @@ Adventurous.Thing.prototype =
         this.sprite.body.prev.x = this.sprite.body.x;
         this.sprite.body.velocity.y = 0;
         this.sprite.body.prev.y = this.sprite.body.y;
-        this.label.visible = false;
+        if(!this.talking)
+        {
+            this.label.visible = false;
+        }
         if(this.currentSpeech)
         {
             this.currentSpeech.audio.pause();
@@ -768,6 +800,7 @@ Adventurous.Thing.prototype =
         obj.automateWalkAnimation = this.automateWalkAnimation;
         obj.alpha = this.sprite.alpha;
         obj.hidden = this.hidden;
+        obj.hasBeenHidden = this.hasBeenHidden;
         obj.dirAnim = this.dirAnim;
         if(this.sprite.animations.currentAnim != null)
         {
@@ -794,6 +827,7 @@ Adventurous.Thing.prototype =
         this.sprite.y = obj.y;
         this.automateWalkAnimation = obj.automateWalkAnimation;
         this.hidden = obj.hidden;
+        this.hasBeenHidden = obj.hasBeenHidden;
         this.sprite.alpha = obj.alpha;
         this.dirAnim = obj.dirAnim;
         if(obj.anim != null)
@@ -801,5 +835,17 @@ Adventurous.Thing.prototype =
             this.sprite.animations.play(obj.anim);
         }
         //TODO -- this.activeRoutine = this.activeRoutine;
+    },
+    
+    bringLabelsToTop: function()
+    {
+        if(this.label != null)
+        {
+            game.world.bringToTop(this.label);
+        }
+        if(this.dialogueLabel != null)
+        {
+            game.world.bringToTop(this.dialogueLabel);
+        }
     }
 };

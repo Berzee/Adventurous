@@ -37,16 +37,29 @@ Adventurous.Util =
         }
     },
     
-    isMouseOverLabel: function(label)
+    isMouseOverObject: function(obj)
     {
-        return (game.input.mousePointer.x >= label.x-label.width*label.anchor.x && game.input.mousePointer.x <= label.x + label.width - label.width*label.anchor.x &&
-                game.input.mousePointer.y >= label.y && game.input.mousePointer.y <= label.y + label.height);
+        return (game.input.mousePointer.x >= obj.x-obj.width*obj.anchor.x && game.input.mousePointer.x <= obj.x + obj.width - obj.width*obj.anchor.x &&
+                game.input.mousePointer.y >= obj.y && game.input.mousePointer.y <= obj.y + obj.height);
+    },
+    
+    calculateDialogueMinTime: function(text)
+    {
+        if(text == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return Math.max(text.split(" ").length * 60 * 1000 / Adventurous.options.wpm,Adventurous.Constants.DIALOGUE_MIN_TIME);
+        }
     },
     
     save: function(name)
     {
         var savegame = {};
         savegame.flags = Adventurous.flags;
+        savegame.options = Adventurous.options;
         savegame.data = currentState.toSaveObject();
         
         var storage = localStorage.getItem(Adventurous.Constants.LOCALSTORAGE_KEY);

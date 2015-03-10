@@ -36,6 +36,8 @@ Adventurous.Inventory = function (startingItems)
     this.label.visible = false;
     
     this.enabled = false;
+    
+    this.talkTime = 0;
 };
 
 Adventurous.Inventory.prototype =
@@ -50,10 +52,14 @@ Adventurous.Inventory.prototype =
             {
                 if(!this.currentSpeech.audio.isPlaying)
                 {
-                    if(game.time.now - this.currentSpeech.audio.startTime > Adventurous.Constants.DIALOGUE_MIN_TIME)
+                    if(this.talkTime > Adventurous.Constants.DIALOGUE_MIN_TIME)
                     {
                         this.labelReady = false;
                         this.stopTalking();
+                    }
+                    else
+                    {
+                        this.talkTime += game.time.elapsed;
                     }
                 }
             }
@@ -166,8 +172,9 @@ Adventurous.Inventory.prototype =
             var column = i % this.columns;
             var row = Math.floor(i / 4);
         
-            item.icon.x = this.background.body.x + this.borderThickness + column * Adventurous.Constants.INVENTORY_ITEM_SIZE;
-            item.icon.y = this.background.body.y + this.borderThickness + row * Adventurous.Constants.INVENTORY_ITEM_SIZE;
+            item.hide();
+            item.icon.x = this.background.x - this.background.width/2 + this.borderThickness + column * Adventurous.Constants.INVENTORY_ITEM_SIZE;
+            item.icon.y = this.background.y - this.background.height/2 + this.borderThickness + row * Adventurous.Constants.INVENTORY_ITEM_SIZE;
             item.icon.visible = this.background.visible;
             this.iconGroup.add(item.icon);
         }
@@ -281,6 +288,7 @@ Adventurous.Inventory.prototype =
     
     stopTalking: function()
     {
+        this.talkTime = 0;
         if(this.currentSpeech)
         {
             this.currentSpeech.audio.stop();
@@ -302,9 +310,9 @@ Adventurous.Inventory.prototype =
     
     positionLabel: function()
     {
-        this.label.x = Math.min(this.background.body.x+this.background.width-this.label.getAt(0).width/2,
-                                Math.max(this.background.body.x+this.label.getAt(0).width/2, this.itemUnderMouse.icon.body.center.x));
-        this.label.y = this.itemUnderMouse.icon.body.y - this.label.getAt(0).height * 1.25;
+        this.label.x = Math.floor(Math.min(this.background.body.x+this.background.width-this.label.getAt(0).width/2,
+                                Math.max(this.background.body.x+this.label.getAt(0).width/2, this.itemUnderMouse.icon.body.center.x)));
+        this.label.y = Math.floor(this.itemUnderMouse.icon.body.y - this.label.getAt(0).height * 1.25);
     },
     
     isMouseInInventory: function()
@@ -336,7 +344,6 @@ Adventurous.Inventory.prototype =
     
     loadFromObject: function(obj)
     {
-        this.iconGroup = game.add.group();
         this.items = new Array();
         for(var i = 0; i < obj.items.length; i++)
         {

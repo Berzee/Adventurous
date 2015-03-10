@@ -1,6 +1,13 @@
 Adventurous = {};
-Adventurous.flags = {}
-Adventurous.speeches = {}
+Adventurous.flags = {};
+Adventurous.speeches = {};
+Adventurous.options =
+    {
+        "mute":false,
+        "soundVolume":1,
+        "musicVolume":1,
+        "wpm":160
+    };
 
 Adventurous.Boot = function (game)
 {
