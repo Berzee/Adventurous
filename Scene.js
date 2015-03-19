@@ -175,6 +175,10 @@ Adventurous.Scene.prototype =
     hide: function()
     {
         this.background.visible = false;
+        for(var i = 0; i < this.things.length; i++)
+        {
+            this.things[i].stopTalking();
+        }
     },
     
     show: function()

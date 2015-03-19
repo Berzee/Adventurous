@@ -6,7 +6,8 @@ Adventurous.options =
         "mute":false,
         "soundVolume":1,
         "musicVolume":1,
-        "wpm":160
+        "voiceEnabled":true,
+        "textSpeed":0.5
     };
 
 Adventurous.Boot = function (game)

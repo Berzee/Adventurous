@@ -2,6 +2,7 @@ Adventurous.Constants =
 {
     GAME_NAME: "The Secret of Gargoyle Manor",
     LOCALSTORAGE_KEY: "Adventurous_The Secret of Gargoyle Manor_localStorage",
+    HAS_VOICE: true,
     
     TILE_SIZE : 16,
     INVERSE_TILE_SIZE : 1/16,
@@ -54,7 +55,9 @@ Adventurous.Constants =
     ACTION_STOP_ROUTINE: "StopRoutine",
     ACTION_START_ROUTINE: "StartRoutine",
     ACTION_SET_FLAG: "setFlag",
-    ACTION_FADEOUT : "Fadeout",
+    ACTION_FADEOUT : "Fade Out",
+    ACTION_FADEIN : "Fade In",
+    ACTION_MAIN_MENU : "MainMenu",
     ACTION_CONV_HIDE_CHOICE: "conv_hideChoice",
     ACTION_CONV_RESET_CHOICES: "conv_resetChoices",
     ACTION_CONV_QUIT: "conv_quit",
@@ -70,6 +73,7 @@ Adventurous.Constants =
     
     INVENTORY_ITEM_SIZE : 75,
     
+    DIALOGUE_DEFAULT_WPM : 160,
     DIALOGUE_MIN_TIME : 2000,
     
     PAUSE_MENU_FIRST_ITEM_Y_POS: 60,

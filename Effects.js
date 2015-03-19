@@ -136,6 +136,7 @@ Adventurous.Effects.prototype =
             case Adventurous.Constants.ACTION_SHOW:
                 this.assignTargetToEffect(effect,this.user.destinationThing);
                 effect.target.show();
+                effect.target.hasBeenHidden = false;
                 break;
                 
             case Adventurous.Constants.ACTION_ANIMATE:
@@ -157,7 +158,14 @@ Adventurous.Effects.prototype =
                 
             case Adventurous.Constants.ACTION_FACE:
                 this.assignTargetToEffect(effect,this.user.destinationThing);
-                effect.target.dirAnim = effect.dir;
+                if(effect.dir != null)
+                {
+                    effect.target.dirAnim = effect.dir;
+                }
+                else if(effect.thing != null)
+                {
+                    effect.target.face(Adventurous.thingsMap[effect.thing]);
+                }
                 if(effect.target.sprite.animations._anims["idle"+effect.dir] != null)
                 {
                     effect.target.sprite.animations.play("idle"+effect.dir,null);
@@ -177,13 +185,26 @@ Adventurous.Effects.prototype =
                 break;
                 
             case Adventurous.Constants.ACTION_FADEOUT:
-                effect.graphics = game.add.graphics(0, 0);  
-                effect.graphics.beginFill(parseInt(effect.color.substring(1)));
-                effect.graphics.fillAlpha = 0;
+                this.assignTargetToEffect(effect,this.user.destinationThing);
+                effect.target.show();
+                effect.target.sprite.alpha = 1;
+                break;
+                
+            case Adventurous.Constants.ACTION_FADEIN:
+                this.assignTargetToEffect(effect,this.user.destinationThing);
+                effect.target.show();
+                effect.target.sprite.alpha = 0;
                 break;
                 
             case Adventurous.Constants.ACTION_TALK:
-                currentState.conversationToStart = this.name;
+                if(effect.name != null)
+                {
+                    currentState.conversationToStart = effect.name;
+                }
+                else
+                {
+                    currentState.conversationToStart = this.name;
+                }
                 break;
                 
             case Adventurous.Constants.ACTION_WALK:
@@ -310,6 +331,10 @@ Adventurous.Effects.prototype =
             case Adventurous.Constants.ACTION_CONV_QUIT:
                 currentState.endConversation();
                 break;
+                
+            case Adventurous.Constants.ACTION_MAIN_MENU:
+                game.state.start('MainMenu');
+                break;
         }
     },
     
@@ -384,18 +409,27 @@ Adventurous.Effects.prototype =
                     break;
                     
                 case Adventurous.Constants.ACTION_FADEOUT:
-                    if(effect.graphics.fillAlpha >= 1)
+                    effect.target.sprite.alpha -= currentState.time.elapsed/effect.time;
+                    if(effect.target.sprite.alpha <= 0)
                     {
-                        effect.graphics.clear();
-                        effect.graphics.fillAlpha = 1;
-                        effect.graphics.drawRect(0,0,game.width,game.height);
+                        effect.target.sprite.alpha = 0;
                         return true;
                     }
                     else
                     {
-                        effect.graphics.clear();
-                        effect.graphics.drawRect(0,0,game.width,game.height);
-                        effect.graphics.fillAlpha += currentState.time.elapsed/effect.time;
+                        return false;
+                    }
+                    break;
+                    
+                case Adventurous.Constants.ACTION_FADEIN:
+                    effect.target.sprite.alpha += currentState.time.elapsed/effect.time;
+                    if(effect.target.sprite.alpha >= 1)
+                    {
+                        effect.target.sprite.alpha = 1;
+                        return true;
+                    }
+                    else
+                    {
                         return false;
                     }
                     break;

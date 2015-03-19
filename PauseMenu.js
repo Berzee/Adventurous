@@ -89,15 +89,28 @@ Adventurous.PauseMenu = function ()
     this.musicVolumeSlider = new Adventurous.Slider(label.x + label.width + 10, y, Adventurous.options.musicVolume);
     this.optionsGroup.add(this.musicVolumeSlider.sliderGroup);
     
-    y += Adventurous.Constants.PAUSE_MENU_LINE_HEIGHT;
-    label = game.add.text(this.background.x+5, y, "Speech:", Adventurous.Constants.DIALOGUE_LABEL_STYLE);
-    label.x -= label.width;
-    this.optionsGroup.add(label);
+    if(Adventurous.Constants.HAS_VOICE)
+    {
+        y += Adventurous.Constants.PAUSE_MENU_LINE_HEIGHT;
+        label = game.add.text(this.background.x+5, y, "Voice:", Adventurous.Constants.DIALOGUE_LABEL_STYLE);
+        label.x -= label.width;
+        this.voiceToggleButton = new Adventurous.ToggleButton(label.x + label.width + 10, y, Adventurous.options.voiceEnabled);
+        this.optionsGroup.add(label);
+        this.optionsGroup.add(this.voiceToggleButton.sprite);
+    }
     
     y += Adventurous.Constants.PAUSE_MENU_LINE_HEIGHT;
-    label = game.add.text(this.background.x+5, y, "Text Speed:", Adventurous.Constants.DIALOGUE_LABEL_STYLE);
-    label.x -= label.width;
-    this.optionsGroup.add(label);
+    this.textSpeedLabel = game.add.text(this.background.x+5, y, "Text Speed:", Adventurous.Constants.DIALOGUE_LABEL_STYLE);
+    this.textSpeedLabel.x -= this.textSpeedLabel.width;
+    this.textSpeedSlider = new Adventurous.Slider(this.textSpeedLabel.x + this.textSpeedLabel.width + 10, y, Adventurous.options.textSpeed);
+    this.optionsGroup.add(this.textSpeedLabel);
+    this.optionsGroup.add(this.textSpeedSlider.sliderGroup);
+    
+    if(Adventurous.Constants.HAS_VOICE && Adventurous.options.voiceEnabled)
+    {
+        this.textSpeedLabel.setStyle(Adventurous.Constants.DISABLED_LABEL_STYLE);
+        this.textSpeedSlider.hide();
+    }
     
     y = this.background.height - Adventurous.Constants.PAUSE_MENU_FIRST_ITEM_Y_POS - Adventurous.Constants.PAUSE_MENU_LINE_HEIGHT;
     button = new Adventurous.Button(this.background.x,y,"OK","pauseMenu_button",
@@ -150,6 +163,19 @@ Adventurous.PauseMenu.prototype =
                 {
                     Adventurous.options.musicVolume = this.musicVolumeSlider.value;
                     Adventurous.options.soundVolume = this.soundVolumeSlider.value;
+                    if(this.voiceToggleButton != null)
+                    {
+                        Adventurous.options.voiceEnabled = this.voiceToggleButton.enabled;
+                        if(!this.voiceToggleButton.enabled)
+                        {
+                            Adventurous.options.textSpeed = this.textSpeedSlider.value;
+                        }
+                    }
+                    else
+                    {
+                        Adventurous.options.textSpeed = this.textSpeedSlider.value;
+                    }
+                    
                     this.showGroup(this.menuGroup);
                 }
             }
@@ -172,8 +198,8 @@ Adventurous.PauseMenu.prototype =
             }
             else
             {
-                currentState.cursor.setItem(null);
                 this.cursorWasHidden = !currentState.cursor.sprite.visible;
+                currentState.cursor.setItem(null);
                 if(this.cursorWasHidden)
                 {
                     this.saveButton.label.setStyle(Adventurous.Constants.DISABLED_LABEL_STYLE);
@@ -217,9 +243,22 @@ Adventurous.PauseMenu.prototype =
         {
             this.soundVolumeSlider.update();
             this.musicVolumeSlider.update();
-            
+            this.textSpeedSlider.update();
             var okButton = this.optionsButtons[0];
             okButton.updateLabel();
+            if(this.voiceToggleButton != null && this.voiceToggleButton.justChanged)
+            {
+                if(this.voiceToggleButton.enabled)
+                {
+                    this.textSpeedLabel.setStyle(Adventurous.Constants.DISABLED_LABEL_STYLE);
+                    this.textSpeedSlider.hide();
+                }
+                else
+                {
+                    this.textSpeedLabel.setStyle(Adventurous.Constants.DIALOGUE_LABEL_STYLE);
+                    this.textSpeedSlider.show();
+                }
+            }
         }
     },
     

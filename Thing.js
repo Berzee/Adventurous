@@ -240,6 +240,11 @@ Adventurous.Thing.prototype =
         {
             this.activeRoutine.update();
         }
+        
+        if(this.loadFramesDelay > 0)
+        {
+            this.loadFramesDelay -= 1;
+        }
 	},
     
     followPath: function(path,thing)
@@ -449,7 +454,7 @@ Adventurous.Thing.prototype =
     
     setLabelText: function(text,label)
     {
-        if(text != label.getAt(0).text)
+        if(label != null && label.length == 2 && text != label.getAt(0).text)
         {
             this.showLabelCountdown = 2;
             label.alpha = 0;
@@ -640,6 +645,10 @@ Adventurous.Thing.prototype =
         if(!this.talking)
         {
             this.label.visible = false;
+            if(this.dialogueLabel != null)
+            {
+                this.dialogueLabel.visible = false;
+            }
         }
         if(this.currentSpeech)
         {
@@ -684,7 +693,7 @@ Adventurous.Thing.prototype =
     
     isStandingIn: function(rect)
     {
-        return rect.contains(this.sprite.body.center.x,this.sprite.body.bottom);
+        return this.loadFramesDelay == 0 && rect.contains(this.sprite.body.center.x,this.sprite.body.bottom);
     },
     
     refreshBitmapData: function()
@@ -795,8 +804,14 @@ Adventurous.Thing.prototype =
         obj.tempVelocityY = this.tempVelocityY;
         obj.velocityX = this.sprite.body.velocity.x;
         obj.velocityY = this.sprite.body.velocity.y;
-        obj.x = this.sprite.x;
-        obj.y = this.sprite.y;
+        var x = Math.floor(this.sprite.x);
+        var y = Math.floor(this.sprite.y);
+        if(this.sprite.width % 2 != 0)
+        {
+            x += 0.5;
+        }
+        obj.x = x;
+        obj.y = y;
         obj.automateWalkAnimation = this.automateWalkAnimation;
         obj.alpha = this.sprite.alpha;
         obj.hidden = this.hidden;
@@ -825,6 +840,7 @@ Adventurous.Thing.prototype =
         this.sprite.body.velocity.y = obj.velocityY;
         this.sprite.x = obj.x;
         this.sprite.y = obj.y;
+        this.loadFramesDelay = 2;
         this.automateWalkAnimation = obj.automateWalkAnimation;
         this.hidden = obj.hidden;
         this.hasBeenHidden = obj.hasBeenHidden;

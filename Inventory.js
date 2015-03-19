@@ -38,6 +38,8 @@ Adventurous.Inventory = function (startingItems)
     this.enabled = false;
     
     this.talkTime = 0;
+    
+    this.itemsPerRow = Math.floor((this.background.width - Adventurous.Constants.INVENTORY_PADDING * 2)/Adventurous.Constants.INVENTORY_ITEM_SIZE);
 };
 
 Adventurous.Inventory.prototype =
@@ -170,7 +172,7 @@ Adventurous.Inventory.prototype =
         {
             var item = this.items[i];
             var column = i % this.columns;
-            var row = Math.floor(i / 4);
+            var row = Math.floor(i / this.itemsPerRow);
         
             item.hide();
             item.icon.x = this.background.x - this.background.width/2 + this.borderThickness + column * Adventurous.Constants.INVENTORY_ITEM_SIZE;
@@ -194,6 +196,7 @@ Adventurous.Inventory.prototype =
                 {
                     if(currentState.cursor.item != null)
                     {
+                        this.stopTalking();
                         this.combineItems();
                     }
                     else
@@ -313,6 +316,11 @@ Adventurous.Inventory.prototype =
         this.label.x = Math.floor(Math.min(this.background.body.x+this.background.width-this.label.getAt(0).width/2,
                                 Math.max(this.background.body.x+this.label.getAt(0).width/2, this.itemUnderMouse.icon.body.center.x)));
         this.label.y = Math.floor(this.itemUnderMouse.icon.body.y - this.label.getAt(0).height * 1.25);
+        
+        if(this.label.getAt(0).width % 2 == 1)
+        {
+            this.label.x += 0.5;
+        }
     },
     
     isMouseInInventory: function()

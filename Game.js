@@ -425,6 +425,10 @@ Adventurous.Game.prototype =
     showScene: function(name,entranceName)
     {
         this.player.stopMoving();
+        for(var i = 0; i < Adventurous.thingsArray.length; i++)
+        {
+            Adventurous.thingsArray[i].hide();
+        }
         if(this.scene != null)
         {
             this.scene.hide();
@@ -512,6 +516,11 @@ Adventurous.Game.prototype =
         Adventurous.options = obj.options;
         this.pauseMenu.soundVolumeSlider.setValue(Adventurous.options.soundVolume);
         this.pauseMenu.musicVolumeSlider.setValue(Adventurous.options.musicVolume);
+        this.pauseMenu.textSpeedSlider.setValue(Adventurous.options.textSpeed);
+        if(Adventurous.Constants.HAS_VOICE)
+        {
+            this.pauseMenu.voiceToggleButton.setEnabled(Adventurous.options.hasVoice);
+        }
         for(var i = 0; i < obj.data.scenes.length; i++)
         {
             Adventurous.scenes[obj.data.scenes[i].name].loadFromObject(obj.data.scenes[i]);

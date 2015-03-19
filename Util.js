@@ -45,13 +45,15 @@ Adventurous.Util =
     
     calculateDialogueMinTime: function(text)
     {
+        var multiplier = Adventurous.options.textSpeed + 0.5;
+        var wpm = multiplier * Adventurous.options.wpm;
         if(text == null)
         {
             return 0;
         }
         else
         {
-            return Math.max(text.split(" ").length * 60 * 1000 / Adventurous.options.wpm,Adventurous.Constants.DIALOGUE_MIN_TIME);
+            return Math.max(text.split(" ").length * 60 * 1000 / Adventurous.Constants.DIALOGUE_DEFAULT_WPM,Adventurous.Constants.DIALOGUE_MIN_TIME);
         }
     },
     
