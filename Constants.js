@@ -7,7 +7,7 @@ Adventurous.Constants =
     TILE_SIZE : 16,
     INVERSE_TILE_SIZE : 1/16,
     
-    WALKABLE_TILES : [2,3,4,5,6,7,8,9,10], //1-indexed
+    WALKABLE_TILES : [2], //1-indexed
     SCALE_STEP : 0.1,
     
     DEFAULT_MOVE_SPEED : 125,
@@ -19,8 +19,8 @@ Adventurous.Constants =
     DIALOGUE_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#ffffee", align: "left", wordWrapWidth: 600, wordWrap: true },
     SELECTED_DIALOGUE_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#ffff77", align: "left", wordWrapWidth: 600, wordWrap: true  },
     DISABLED_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#dddddd", align: "left", wordWrapWidth: 600, wordWrap: true },
-    MAIN_MENU_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#000000", align: "left", wordWrapWidth: 600, wordWrap: true },
-    SELECTED_MAIN_MENU_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#555555", align: "left", wordWrapWidth: 600, wordWrap: true  },
+    MAIN_MENU_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#333333", align: "left", wordWrapWidth: 600, wordWrap: true },
+    SELECTED_MAIN_MENU_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#F6F699", align: "left", wordWrapWidth: 600, wordWrap: true  },
     LINE_HEIGHT: 25,
     
     LMB : 0,
@@ -75,7 +75,7 @@ Adventurous.Constants =
     
     INVENTORY_ITEM_SIZE : 75,
     
-    DIALOGUE_DEFAULT_WPM : 160,
+    DIALOGUE_DEFAULT_WPM : 120,
     DIALOGUE_MIN_TIME : 2000,
     
     PAUSE_MENU_FIRST_ITEM_Y_POS: 60,

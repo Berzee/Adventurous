@@ -7,7 +7,18 @@ Adventurous.Scene = function (obj)
         this.background = game.add.sprite(0,0,this.name);
         game.physics.enable(this.background, Phaser.Physics.ARCADE, true);
         this.map = game.add.tilemap(this.name);
-        this.graph = new Graph(this.map.layers[0].data);
+        var graphMap = [];
+        for(var i = 0 ; i < this.map.layers[0].data.length; i++)
+        {
+            var mapRow = this.map.layers[0].data[i];
+            var arr = [];
+            for(var j = 0; j < mapRow.length; j++)
+            {
+                arr[arr.length] = mapRow[j].index;
+            }
+            graphMap[i] = arr;
+        }
+        this.graph = new Graph(graphMap);
     }
     else
     {

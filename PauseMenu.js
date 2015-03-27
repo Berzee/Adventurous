@@ -276,7 +276,8 @@ Adventurous.PauseMenu.prototype =
                 break;
                 
             case "Load Game":
-                Adventurous.Util.load("test");
+                Adventurous.gameToLoad = "test";
+                game.state.start('Game');
                 this.togglePauseMenu();
                 break;
                 

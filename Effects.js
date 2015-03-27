@@ -198,6 +198,7 @@ Adventurous.Effects.prototype =
                 this.assignTargetToEffect(effect,this.user.destinationThing);
                 effect.target.show();
                 effect.target.sprite.alpha = 1;
+                effect.target.hasBeenHidden = true;
                 break;
                 
             case Adventurous.Constants.ACTION_FADEIN:

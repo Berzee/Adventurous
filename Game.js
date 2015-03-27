@@ -73,7 +73,7 @@ Adventurous.Game.prototype =
         }
         else
         {
-            this.showScene(Adventurous.startingScene);
+            this.showScene(Adventurous.startingScene,"start");
         }
 	},
     
@@ -308,16 +308,22 @@ Adventurous.Game.prototype =
         {
             if(this.cursor.item != null)
             {
-                this.thingUnderMouse.setLabelUseText(this.cursor.item.name);
+                if(this.thingUnderMouse.usableZone != null && this.thingUnderMouse.usableZone.length > 0)
+                {
+                    this.thingUnderMouse.setLabelUseText(this.cursor.item.name);
+                    if(!this.player.talking)
+                    {
+                        this.thingUnderMouse.showLabel(this.thingUnderMouse.label);
+                    }
+                }
             }
             else
             {
                 this.thingUnderMouse.setLabelUseText("");
-            }
-            
-            if(!this.player.talking)
-            {
-                this.thingUnderMouse.showLabel(this.thingUnderMouse.label);
+                if(!this.player.talking)
+                {
+                    this.thingUnderMouse.showLabel(this.thingUnderMouse.label);
+                }
             }
         }
     },
