@@ -42,6 +42,8 @@ Adventurous.Constants =
     ACTION_TALK : "Talk",
     ACTION_REMARK : "Remark",
     ACTION_PICK_UP : "Pickup",
+    ACTION_STOP : "Stop",
+    ACTION_SET_ALIAS : "Alias",
     ACTION_DROP : "Drop",
     ACTION_HIDE : "Hide",
     ACTION_SHOW : "Show",

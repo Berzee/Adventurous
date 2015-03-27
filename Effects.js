@@ -180,6 +180,16 @@ Adventurous.Effects.prototype =
                 effect.timer = parseFloat(effect.time);
                 break;
                 
+            case Adventurous.Constants.ACTION_STOP:
+                this.assignTargetToEffect(effect,null);
+                effect.target.stopMoving();
+                break;
+                
+            case Adventurous.Constants.ACTION_SET_ALIAS:
+                this.assignTargetToEffect(effect,null);
+                effect.target.alias = effect.alias;
+                break;
+                
             case Adventurous.Constants.ACTION_SCENE:
                 currentState.switchToScene(effect.scene,effect.entrance);
                 break;
@@ -285,7 +295,14 @@ Adventurous.Effects.prototype =
                 if(currentState.currentConversation != null && currentState.currentConversation.latestChoice != null)
                 {
                     currentState.currentConversation.latestChoice.hidden = true;
-                    currentState.updateDialogueOptions();
+                    if(currentState.dialogueGroupStartIndex > 0)
+                    {
+                        currentState.dialogueUp();
+                    }
+                    else
+                    {
+                        currentState.updateDialogueOptions();
+                    }
                 }
                 break;
             

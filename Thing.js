@@ -3,6 +3,7 @@ Adventurous.Thing = function (obj)
     this.name = obj.name;
     this.walks = obj.walks;
 	this.imageName = obj.image;
+    this.alias = obj.alias;
     if(this.imageName == null)
     {
         this.imageName = this.name;
@@ -428,8 +429,8 @@ Adventurous.Thing.prototype =
     {
          this.label = game.add.group();
          this.label.add(game.add.text(Adventurous.Constants.LABEL_SHADOW_OFFSET_X, Adventurous.Constants.LABEL_SHADOW_OFFSET_Y,
-                                      this.name, Adventurous.Constants.LABEL_SHADOW_STYLE));
-         this.label.add(game.add.text(0, 0, this.name, Adventurous.Constants.LABEL_STYLE));
+                                      this.getDisplayName(), Adventurous.Constants.LABEL_SHADOW_STYLE));
+         this.label.add(game.add.text(0, 0, this.getDisplayName(), Adventurous.Constants.LABEL_STYLE));
          this.label.getAt(0).anchor.x = 0;
          this.label.getAt(1).anchor.x = 0;
          this.label.visible = false;
@@ -465,7 +466,7 @@ Adventurous.Thing.prototype =
     
     setLabelUseText: function(withItem)
     {
-        this.setLabelText(this.interactions.getUseText(withItem),this.label);
+        this.setLabelText(this.interactions.getUseText(withItem,this.getDisplayName()),this.label);
     },
     
     getNearestTile: function(tiles)
@@ -562,9 +563,21 @@ Adventurous.Thing.prototype =
             this.setLabelText("",this.dialogueLabel);
         }
         this.label.visible = false;
-        this.setLabelText(this.name,this.label);
+        this.setLabelText(this.getDisplayName(),this.label);
         this.sprite.animations.play(this.animBeforeTalking);
         this.animBeforeTalking = null;
+    },
+    
+    getDisplayName: function()
+    {
+        if(this.alias != null && this.alias != "")
+        {
+            return this.alias;
+        }
+        else
+        {
+            return this.name;
+        }
     },
     
     stopMoving: function(continueCustomAnimation)
@@ -693,7 +706,7 @@ Adventurous.Thing.prototype =
     
     isStandingIn: function(rect)
     {
-        return this.loadFramesDelay == 0 && rect.contains(this.sprite.body.center.x,this.sprite.body.bottom);
+        return !(this.loadFramesDelay > 0) && rect.contains(this.sprite.body.center.x,this.sprite.body.bottom);
     },
     
     refreshBitmapData: function()
@@ -786,6 +799,10 @@ Adventurous.Thing.prototype =
                 
                 this.setScale(scale);
             }
+            else
+            {
+                this.setScale(1);
+            }
         }   
     },
     
@@ -793,6 +810,7 @@ Adventurous.Thing.prototype =
     {
         var obj = {};
         obj.name = this.name;
+        obj.alias = this.alias;
         obj.waypoints = this.waypoints;
         obj.destination = this.destination;
         if(this.destinationThing != null)
@@ -827,6 +845,7 @@ Adventurous.Thing.prototype =
     
     loadFromObject: function(obj)
     {
+        this.alias = obj.alias;
         this.waypoints = obj.waypoints;
         this.destination = obj.destination;
         if(obj.destinationThing != null)

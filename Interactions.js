@@ -32,7 +32,7 @@ Adventurous.Interactions.prototype =
         this.processEffects();
     },
     
-    getUseText: function(withItem)
+    getUseText: function(withItem,targetName)
     {
         var verb = "Use";
         var preposition = "With";
@@ -51,11 +51,11 @@ Adventurous.Interactions.prototype =
                 }
             }
             
-            return verb + " " + withItem + " " + preposition + " " + this.name;
+            return verb + " " + withItem + " " + preposition + " " + targetName;
         }
         else
         {
-            return this.name;
+            return targetName;
         }
     },
     

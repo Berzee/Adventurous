@@ -476,6 +476,14 @@ Adventurous.Game.prototype =
                         if(Adventurous.Util.areConditionsMet(entrance.onEntry[i].conditions))
                         {
                             this.activeEffects = new Adventurous.Effects(this.player,entrance.onEntry[i].effects);
+                            var preEffects = entrance.onEntry[i].preEffects;
+                            if(preEffects != null)
+                            {
+                                for(var j = 0; j < preEffects.length; j++)
+                                {
+                                    this.activeEffects.applyEffect(preEffects[j]);
+                                }
+                            }
                             break;
                         }
                     }
