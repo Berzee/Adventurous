@@ -63,6 +63,10 @@ Adventurous.Util =
         savegame.flags = Adventurous.flags;
         savegame.options = Adventurous.options;
         savegame.data = currentState.toSaveObject();
+        if(Adventurous.backgroundMusic != null)
+        {
+            savegame.backgroundMusic = Adventurous.backgroundMusic.name;
+        }
         
         var storage = localStorage.getItem(Adventurous.Constants.LOCALSTORAGE_KEY);
         if(storage == null)
@@ -90,6 +94,20 @@ Adventurous.Util =
             if(storage != null && storage.saves != null && storage.saves[name] != null)
             {
                 var savegame = storage.saves[name];
+                if(savegame.backgroundMusic != null)
+                {
+                    if(Adventurous.backgroundMusic == null || Adventurous.backgroundMusic.name != savegame.backgroundMusic)
+                    {
+                        if(Adventurous.backgroundMusic != null)
+                        {
+                            Adventurous.backgroundMusic.stop();
+                        }
+                        Adventurous.backgroundMusic = game.add.audio(savegame.backgroundMusic);
+                        Adventurous.backgroundMusic.volume = Adventurous.options.musicVolume;
+                        Adventurous.backgroundMusic.loop = true;
+                        Adventurous.backgroundMusic.play();   
+                    }
+                }
                 currentState.loadFromObject(savegame);
             }
         }    

@@ -5,7 +5,7 @@ Adventurous.options =
     {
         "mute":false,
         "soundVolume":1,
-        "musicVolume":1,
+        "musicVolume":0.5,
         "voiceEnabled":true,
         "textSpeed":0.5
     };

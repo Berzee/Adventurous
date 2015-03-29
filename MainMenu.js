@@ -30,6 +30,14 @@ Adventurous.MainMenu.prototype =
         
         game.antialias = true;
         Phaser.Canvas.setSmoothingEnabled(game.renderer.context, true);
+        
+        if(Adventurous.backgroundMusic == null)
+        {
+            Adventurous.backgroundMusic = this.game.add.audio(Adventurous.Constants.MAIN_MENU_MUSIC);
+            Adventurous.backgroundMusic.volume = Adventurous.options.musicVolume;
+            Adventurous.backgroundMusic.loop = true;
+            Adventurous.backgroundMusic.play();   
+        }
 	},
     
     mouseDown: function(pointer)

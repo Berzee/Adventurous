@@ -4,6 +4,8 @@ Adventurous.Constants =
     LOCALSTORAGE_KEY: "Adventurous_The Secret of Gargoyle Manor_localStorage",
     HAS_VOICE: true,
     
+    MAIN_MENU_MUSIC: "goblinking",
+    
     TILE_SIZE : 16,
     INVERSE_TILE_SIZE : 1/16,
     
@@ -19,7 +21,7 @@ Adventurous.Constants =
     DIALOGUE_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#ffffee", align: "left", wordWrapWidth: 600, wordWrap: true },
     SELECTED_DIALOGUE_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#ffff77", align: "left", wordWrapWidth: 600, wordWrap: true  },
     DISABLED_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#dddddd", align: "left", wordWrapWidth: 600, wordWrap: true },
-    MAIN_MENU_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#333333", align: "left", wordWrapWidth: 600, wordWrap: true },
+    MAIN_MENU_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#000000", align: "left", wordWrapWidth: 600, wordWrap: true },
     SELECTED_MAIN_MENU_LABEL_STYLE : { font: "17px AdventurousFont", fill: "#F6F699", align: "left", wordWrapWidth: 600, wordWrap: true  },
     LINE_HEIGHT: 25,
     
@@ -43,6 +45,8 @@ Adventurous.Constants =
     ACTION_REMARK : "Remark",
     ACTION_PICK_UP : "Pickup",
     ACTION_STOP : "Stop",
+    ACTION_SOUND : "Sound",
+    ACTION_MUSIC : "Music",
     ACTION_SET_ALIAS : "Alias",
     ACTION_DROP : "Drop",
     ACTION_HIDE : "Hide",

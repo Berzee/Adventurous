@@ -416,7 +416,18 @@ Adventurous.Game.prototype =
         for(var i = 0; i < this.scene.things.length; i++)
         {
             this.scene.things[i].freeze();
-        }   
+        }
+        if(currentState.activeEffects != null)
+        {
+            for(var i = 0; i < this.activeEffects.effects.length; i++)
+            {
+                var effect = this.activeEffects.effects[i];
+                if(effect.type == Adventurous.Constants.ACTION_SOUND && effect.audioClip != null && effect.audioClip.isPlaying)
+                {
+                    effect.audioClip.pause();
+                }
+            }
+        }
     },
     
     unfreeze: function()
@@ -425,7 +436,18 @@ Adventurous.Game.prototype =
         for(var i = 0; i < this.scene.things.length; i++)
         {
             this.scene.things[i].unfreeze();
-        }   
+        }
+        if(currentState.activeEffects != null)
+        {
+            for(var i = 0; i < this.activeEffects.effects.length; i++)
+            {
+                var effect = this.activeEffects.effects[i];
+                if(effect.type == Adventurous.Constants.ACTION_SOUND && effect.audioClip != null && effect.audioClip.paused)
+                {
+                    effect.audioClip.resume();
+                }
+            }
+        }
     },
     
     showScene: function(name,entranceName)
@@ -513,6 +535,7 @@ Adventurous.Game.prototype =
     toSaveObject: function()
     {
         var obj = {};
+        
         obj.currentScene = this.scene.name;
         obj.scenes = new Array();
         for(var key in Adventurous.scenes)
@@ -528,6 +551,7 @@ Adventurous.Game.prototype =
     {
         Adventurous.flags = obj.flags;
         Adventurous.options = obj.options;
+        
         this.pauseMenu.soundVolumeSlider.setValue(Adventurous.options.soundVolume);
         this.pauseMenu.musicVolumeSlider.setValue(Adventurous.options.musicVolume);
         this.pauseMenu.textSpeedSlider.setValue(Adventurous.options.textSpeed);

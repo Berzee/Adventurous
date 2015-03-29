@@ -739,65 +739,32 @@ Adventurous.Thing.prototype =
     {
         if(this.isScalable)
         {
-            var tileObj = currentState.scene.map.getTile(this.getTileX(),this.getTileY());
-            var tile = -1;
-            if(tileObj != null)
+            if(currentState.scene.scales != null)
             {
-                tile = tileObj.index;
-            }
-            
-            if(Adventurous.Constants.WALKABLE_TILES.indexOf(tile) != -1)
-            {
-                var scale = 1 - Adventurous.Constants.SCALE_STEP * Adventurous.Constants.WALKABLE_TILES.indexOf(tile);
+                var lowerScale = 0;
+                var lowerScalePos = 0;
+                var upperScale = 1;
+                var upperScalePos = game.height;
                 
-                var topTileInScaleZone = this.getTileY();
-                while(topTileInScaleZone > 0 && currentState.scene.map.getTile(this.getTileX(),topTileInScaleZone - 1).index == tile)
+                for(var i = 0; i < currentState.scene.scales.length; i++)
                 {
-                    topTileInScaleZone--;
-                }
-                
-                var bottomTileInScaleZone = this.getTileY();
-                while(bottomTileInScaleZone < currentState.scene.map.layers[0].height-1 && currentState.scene.map.getTile(this.getTileX(),bottomTileInScaleZone + 1).index == tile)
-                {
-                    bottomTileInScaleZone++;
-                }
-                
-                var scaleZoneTop = topTileInScaleZone * Adventurous.Constants.TILE_SIZE;
-                var scaleZoneBottom = (bottomTileInScaleZone + 1) * Adventurous.Constants.TILE_SIZE;
-                var scaleZoneHeight = scaleZoneBottom - scaleZoneTop;
-                var scaleZoneMiddle = scaleZoneTop+scaleZoneHeight/2;
-                
-                var fractionOfScaleZoneUpOrDown = (this.sprite.y - scaleZoneMiddle)/scaleZoneHeight;
-                if(fractionOfScaleZoneUpOrDown < 0)
-                {
-                    var nextTileObj = currentState.scene.map.getTile(this.getTileX(),Math.max(topTileInScaleZone-1,0));
-                    var nextTile = -1;
-                    if(nextTileObj != null)
+                    var scale = currentState.scene.scales[i];
+                    if(scale.y > lowerScalePos && scale.y <= this.sprite.y)
                     {
-                        nextTile = nextTileObj.index;
+                        lowerScale = scale.scale;
+                        lowerScalePos = scale.y;
                     }
-                    if(Adventurous.Constants.WALKABLE_TILES.indexOf(nextTile) != -1)
+                    if(scale.y < upperScalePos && scale.y >= this.sprite.y)
                     {
-                        var scaleSteps = (tile - nextTile);
-                        scale = scale + scaleSteps * Math.abs(fractionOfScaleZoneUpOrDown) * Adventurous.Constants.SCALE_STEP;
-                    }
-                }
-                else if(fractionOfScaleZoneUpOrDown > 0)
-                {
-                    var nextTileObj = currentState.scene.map.getTile(this.getTileX(),Math.min(bottomTileInScaleZone+1,currentState.scene.map.layers[0].height-1));
-                    var nextTile = -1;
-                    if(nextTileObj != null)
-                    {
-                        nextTile = nextTileObj.index;
-                    }
-                    if(Adventurous.Constants.WALKABLE_TILES.indexOf(nextTile) != -1)
-                    {
-                        var scaleSteps = (tile - nextTile);
-                        scale = scale + scaleSteps * Math.abs(fractionOfScaleZoneUpOrDown) * Adventurous.Constants.SCALE_STEP;
+                        upperScale = scale.scale;
+                        upperScalePos = scale.y;
                     }
                 }
                 
-                this.setScale(scale);
+                var scaleDiff = upperScale - lowerScale;
+                var scalePosDiff = upperScalePos - lowerScalePos;
+                var newScale = lowerScale + scaleDiff * (this.sprite.y - lowerScalePos) / scalePosDiff;
+                this.setScale(newScale);
             }
             else
             {

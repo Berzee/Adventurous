@@ -163,6 +163,10 @@ Adventurous.PauseMenu.prototype =
                 {
                     Adventurous.options.musicVolume = this.musicVolumeSlider.value;
                     Adventurous.options.soundVolume = this.soundVolumeSlider.value;
+                    if(Adventurous.backgroundMusic != null)
+                    {
+                        Adventurous.backgroundMusic.volume = Adventurous.options.musicVolume;
+                    }
                     if(this.voiceToggleButton != null)
                     {
                         Adventurous.options.voiceEnabled = this.voiceToggleButton.enabled;
@@ -209,7 +213,7 @@ Adventurous.PauseMenu.prototype =
                     this.saveButton.label.setStyle(Adventurous.Constants.DIALOGUE_LABEL_STYLE);
                 }
                 currentState.cursor.show();
-                this.background.visible = true;
+                this.background.visible = true;                
                 this.showGroup(this.menuGroup);
                 currentState.freeze();
             }

@@ -2,6 +2,11 @@ Adventurous.Scene = function (obj)
 {
     this.name = obj.name;
     
+    if(obj.scales != null)
+    {
+        this.scales = obj.scales;
+    }
+    
     if(this.name != Adventurous.Constants.OFFSTAGE_SCENE)
     {
         this.background = game.add.sprite(0,0,this.name);

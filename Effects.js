@@ -127,6 +127,31 @@ Adventurous.Effects.prototype =
                 currentState.inventory.removeItem(effect.target);
                 break;
                 
+            case Adventurous.Constants.ACTION_SOUND:
+                effect.audioClip = game.add.audio(effect.name);
+                effect.audioClip.volume = Adventurous.options.soundVolume;
+                if(effect.loop != null)
+                {
+                    effect.audioClip.loop = effect.loop;
+                }
+                else
+                {
+                    effect.audioClip.loop = false;
+                }
+                effect.audioClip.play();
+                break;
+                
+            case Adventurous.Constants.ACTION_MUSIC:
+                if(effect.time == null)
+                {
+                    effect.time = 1000;
+                }
+                if(Adventurous.backgroundMusic != null)
+                {
+                    effect.startingVolume = Adventurous.backgroundMusic.volume;
+                }
+                break;
+                
             case Adventurous.Constants.ACTION_HIDE:
                 this.assignTargetToEffect(effect,this.user.destinationThing);
                 effect.target.hide();
@@ -449,6 +474,49 @@ Adventurous.Effects.prototype =
                     else
                     {
                         return false;
+                    }
+                    break;
+                    
+                case Adventurous.Constants.ACTION_SOUND:
+                    if(effect.audioClip.loop != true)
+                    {
+                        return !effect.audioClip.isPlaying;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                    break;
+                    
+                case Adventurous.Constants.ACTION_MUSIC:
+                    if(Adventurous.backgroundMusic == null)
+                    {
+                        Adventurous.backgroundMusic = game.add.audio(effect.name);
+                        Adventurous.backgroundMusic.volume = Adventurous.options.musicVolume;
+                        Adventurous.backgroundMusic.loop = true;
+                        Adventurous.backgroundMusic.play();
+                        return true;
+                    }
+                    else if(Adventurous.backgroundMusic.name == effect.name)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        Adventurous.backgroundMusic.volume -= effect.startingVolume * (currentState.time.elapsed / effect.time);
+                        if(Adventurous.backgroundMusic.volume <= 0)
+                        {
+                            Adventurous.backgroundMusic.stop();
+                            Adventurous.backgroundMusic = game.add.audio(effect.name);
+                            Adventurous.backgroundMusic.volume = Adventurous.options.musicVolume;
+                            Adventurous.backgroundMusic.loop = true;
+                            Adventurous.backgroundMusic.play();
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                     break;
                     
