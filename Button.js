@@ -9,7 +9,7 @@ Adventurous.Button = function (x,y,text,buttonImage,normalStyle,hightlightStyle)
     this.normalStyle = normalStyle;
     this.highlightStyle = hightlightStyle;
     
-    this.label = game.add.text(x, y, text, normalStyle);
+    this.label = game.add.text(x, y+Adventurous.Constants.BROWSER_LABEL_Y_OFFSET, text, normalStyle);
     this.label.x -= Math.floor(this.label.width/2);
     this.label.x += 3;
     this.label.y += 3;

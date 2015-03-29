@@ -557,7 +557,7 @@ Adventurous.Game.prototype =
         this.pauseMenu.textSpeedSlider.setValue(Adventurous.options.textSpeed);
         if(Adventurous.Constants.HAS_VOICE)
         {
-            this.pauseMenu.voiceToggleButton.setEnabled(Adventurous.options.hasVoice);
+            this.pauseMenu.voiceToggleButton.setSelected(Adventurous.options.hasVoice);
         }
         for(var i = 0; i < obj.data.scenes.length; i++)
         {

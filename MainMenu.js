@@ -12,7 +12,7 @@ Adventurous.MainMenu.prototype =
         
         this.menuGroup = game.add.group();
         
-        this.playLabel = game.add.text(game.width/2, Adventurous.Constants.MAIN_MENU_FIRST_ITEM_Y_POS, "New Game", Adventurous.Constants.MAIN_MENU_LABEL_STYLE);
+        this.playLabel = game.add.text(game.width/2, Adventurous.Constants.MAIN_MENU_FIRST_ITEM_Y_POS+Adventurous.Constants.BROWSER_LABEL_Y_OFFSET, "New Game", Adventurous.Constants.MAIN_MENU_LABEL_STYLE);
         this.playLabel.x -= Math.floor(this.playLabel.width/2);
         this.menuGroup.add(this.playLabel);
         

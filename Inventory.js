@@ -285,7 +285,10 @@ Adventurous.Inventory.prototype =
         this.setLabelText('\"'+speech.text+'\"');
         this.positionLabel();
         this.label.visible = true;
-        speech.audio.play();
+        if(game.cache.getKeys(Phaser.Cache.SOUND).indexOf(speech.audio.name) != -1)
+        {
+            speech.audio.play('',0,Adventurous.options.soundVolume);
+        }
         speech.audio.startTime = game.time.now;
     },
     
@@ -308,7 +311,7 @@ Adventurous.Inventory.prototype =
     
     setLabelUseText: function(withItem)
     {
-        this.setLabelText(this.itemUnderMouse.interactions.getUseText(withItem));
+        this.setLabelText(this.itemUnderMouse.interactions.getUseText(withItem,this.itemUnderMouse.getDisplayName()));
     },
     
     positionLabel: function()

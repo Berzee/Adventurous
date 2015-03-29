@@ -16,6 +16,7 @@ Adventurous.PauseMenu = function ()
     
     //Main pause menu
     var y = Adventurous.Constants.PAUSE_MENU_FIRST_ITEM_Y_POS;
+    
     var button = new Adventurous.Button(this.background.x,y,"Continue","pauseMenu_button",
                                         Adventurous.Constants.DIALOGUE_LABEL_STYLE,Adventurous.Constants.SELECTED_DIALOGUE_LABEL_STYLE);
     this.menuButtons[this.menuButtons.length] = button;
@@ -117,6 +118,55 @@ Adventurous.PauseMenu = function ()
                                         Adventurous.Constants.DIALOGUE_LABEL_STYLE,Adventurous.Constants.SELECTED_DIALOGUE_LABEL_STYLE);
     this.optionsButtons[this.optionsButtons.length] = button;
     this.optionsGroup.add(button.buttonGroup);
+    
+    //Save game menu
+    this.savegameButtons = [];
+    this.savegameGroup = game.add.group();
+    this.savegameGroup.visible = false;
+    
+    y = Adventurous.Constants.PAUSE_MENU_FIRST_ITEM_Y_POS;
+    
+    this.savegameToggle1 = new Adventurous.ToggleButton(this.background.x + 10, y, true);
+    this.savegameToggle1.sprite.x -= Math.floor(Adventurous.Constants.PAUSE_MENU_WIDTH / 2);
+    this.savegameLabel1 = game.add.text(this.savegameToggle1.sprite.x + this.savegameToggle1.sprite.width + 10, y, "Save Slot A\nempty", Adventurous.Constants.SELECTED_DIALOGUE_LABEL_STYLE);
+    this.savegameGroup.add(this.savegameLabel1);
+    this.savegameGroup.add(this.savegameToggle1.sprite);
+    
+    y += Adventurous.Constants.PAUSE_MENU_LINE_HEIGHT * 2;
+    
+    this.savegameToggle2 = new Adventurous.ToggleButton(this.background.x + 10, y, false);
+    this.savegameToggle2.sprite.x -= Math.floor(Adventurous.Constants.PAUSE_MENU_WIDTH / 2);
+    this.savegameLabel2 = game.add.text(this.savegameToggle2.sprite.x + this.savegameToggle2.sprite.width + 10, y, "Save Slot B\nempty", Adventurous.Constants.DIALOGUE_LABEL_STYLE);
+    this.savegameGroup.add(this.savegameLabel2);
+    this.savegameGroup.add(this.savegameToggle2.sprite);
+    
+    y += Adventurous.Constants.PAUSE_MENU_LINE_HEIGHT * 2;
+    
+    this.savegameToggle3 = new Adventurous.ToggleButton(this.background.x + 10, y, false);
+    this.savegameToggle3.sprite.x -= Math.floor(Adventurous.Constants.PAUSE_MENU_WIDTH / 2);
+    this.savegameLabel3 = game.add.text(this.savegameToggle3.sprite.x + this.savegameToggle2.sprite.width + 10, y, "Save Slot C\nempty", Adventurous.Constants.DIALOGUE_LABEL_STYLE);
+    this.savegameGroup.add(this.savegameLabel3);
+    this.savegameGroup.add(this.savegameToggle3.sprite);
+    
+    y = this.background.height - Adventurous.Constants.PAUSE_MENU_FIRST_ITEM_Y_POS - 10;
+    button = new Adventurous.Button(this.background.x,y,"Save","pauseMenu_button",
+                                        Adventurous.Constants.DIALOGUE_LABEL_STYLE,Adventurous.Constants.SELECTED_DIALOGUE_LABEL_STYLE);
+    button.background.x -= Math.floor(button.background.width / 2 + 5);
+    button.label.x -= Math.floor(button.background.width / 2 + 5);
+    this.savegameButtons[this.savegameButtons.length] = button;
+    this.savegameGroup.add(button.buttonGroup);
+    
+    y = this.background.height - Adventurous.Constants.PAUSE_MENU_FIRST_ITEM_Y_POS - 10;
+    button = new Adventurous.Button(this.background.x,y,"Cancel","pauseMenu_button",
+                                        Adventurous.Constants.DIALOGUE_LABEL_STYLE,Adventurous.Constants.SELECTED_DIALOGUE_LABEL_STYLE);
+    this.savegameButtons[this.savegameButtons.length] = button;
+    button.background.x += Math.floor(button.background.width / 2 + 5);
+    button.label.x += Math.floor(button.background.width / 2 + 5);
+    this.savegameGroup.add(button.buttonGroup);
+    
+    this.savegameToggle1.enabled = false;
+    this.savegameToggle2.enabled = true;
+    this.savegameToggle3.enabled = true;
 };
 
 Adventurous.PauseMenu.prototype =
@@ -169,8 +219,8 @@ Adventurous.PauseMenu.prototype =
                     }
                     if(this.voiceToggleButton != null)
                     {
-                        Adventurous.options.voiceEnabled = this.voiceToggleButton.enabled;
-                        if(!this.voiceToggleButton.enabled)
+                        Adventurous.options.voiceEnabled = this.voiceToggleButton.selected;
+                        if(!this.voiceToggleButton.selected)
                         {
                             Adventurous.options.textSpeed = this.textSpeedSlider.value;
                         }
@@ -183,6 +233,29 @@ Adventurous.PauseMenu.prototype =
                     this.showGroup(this.menuGroup);
                 }
             }
+            else if(this.savegameGroup.visible)
+            {
+                var okButton = this.savegameButtons[0];
+                var cancelButton = this.savegameButtons[1];
+                if(Adventurous.Util.isMouseOverObject(okButton.background))
+                {
+                    var saveName = "1";
+                    if(this.savegameToggle2.selected)
+                    {
+                        saveName = "2";
+                    }
+                    else if(this.savegameToggle3.selected)
+                    {
+                        saveName = "3";
+                    }
+                    Adventurous.Util.save(saveName);
+                    this.togglePauseMenu();
+                }
+                else if(Adventurous.Util.isMouseOverObject(cancelButton.background))
+                {
+                    this.togglePauseMenu();
+                }
+            }
         }
     },
     
@@ -190,6 +263,10 @@ Adventurous.PauseMenu.prototype =
     {
         if(!currentState.inventory.background.visible && currentState.currentConversation == null)
         {
+            var clickSound = game.add.audio(Adventurous.Constants.MENU_BUTTON_SOUND);
+            clickSound.volume = Adventurous.options.soundVolume;
+            clickSound.play();
+            
             if(this.background.visible)
             {
                 if(this.cursorWasHidden)
@@ -252,7 +329,8 @@ Adventurous.PauseMenu.prototype =
             okButton.updateLabel();
             if(this.voiceToggleButton != null && this.voiceToggleButton.justChanged)
             {
-                if(this.voiceToggleButton.enabled)
+                this.voiceToggleButton.justChanged = false;
+                if(this.voiceToggleButton.selected)
                 {
                     this.textSpeedLabel.setStyle(Adventurous.Constants.DISABLED_LABEL_STYLE);
                     this.textSpeedSlider.hide();
@@ -262,6 +340,50 @@ Adventurous.PauseMenu.prototype =
                     this.textSpeedLabel.setStyle(Adventurous.Constants.DIALOGUE_LABEL_STYLE);
                     this.textSpeedSlider.show();
                 }
+            }
+        }
+        else if(this.savegameGroup.visible)
+        {
+            if(this.savegameToggle1.justChanged)
+            {
+                this.savegameToggle1.justChanged = false;
+                this.savegameToggle1.enabled = false;
+                this.savegameToggle2.enabled = true;
+                this.savegameToggle3.enabled = true;
+                this.savegameToggle2.setSelected(false,true);
+                this.savegameToggle3.setSelected(false,true);
+                this.savegameLabel1.setStyle(Adventurous.Constants.SELECTED_DIALOGUE_LABEL_STYLE);
+                this.savegameLabel2.setStyle(Adventurous.Constants.DIALOGUE_LABEL_STYLE);
+                this.savegameLabel3.setStyle(Adventurous.Constants.DIALOGUE_LABEL_STYLE);
+            }
+            else if(this.savegameToggle2.justChanged)
+            {
+                this.savegameToggle2.justChanged = false;
+                this.savegameToggle2.enabled = false;
+                this.savegameToggle1.enabled = true;
+                this.savegameToggle3.enabled = true;
+                this.savegameToggle1.setSelected(false,true);
+                this.savegameToggle3.setSelected(false,true);
+                this.savegameLabel2.setStyle(Adventurous.Constants.SELECTED_DIALOGUE_LABEL_STYLE);
+                this.savegameLabel1.setStyle(Adventurous.Constants.DIALOGUE_LABEL_STYLE);
+                this.savegameLabel3.setStyle(Adventurous.Constants.DIALOGUE_LABEL_STYLE);
+            }
+            else if(this.savegameToggle3.justChanged)
+            {
+                this.savegameToggle3.justChanged = false;
+                this.savegameToggle3.enabled = false;
+                this.savegameToggle2.enabled = true;
+                this.savegameToggle1.enabled = true;
+                this.savegameToggle2.setSelected(false,true);
+                this.savegameToggle1.setSelected(false,true);
+                this.savegameLabel3.setStyle(Adventurous.Constants.SELECTED_DIALOGUE_LABEL_STYLE);
+                this.savegameLabel2.setStyle(Adventurous.Constants.DIALOGUE_LABEL_STYLE);
+                this.savegameLabel1.setStyle(Adventurous.Constants.DIALOGUE_LABEL_STYLE);
+            }
+            
+            for(var i = 0; i < this.savegameButtons.length; i++)
+            {
+                this.savegameButtons[i].updateLabel();
             }
         }
     },
@@ -275,8 +397,24 @@ Adventurous.PauseMenu.prototype =
                 break;
                 
             case "Save Game":
-                Adventurous.Util.save("test");
-                this.togglePauseMenu();
+                var storage = localStorage.getItem(Adventurous.Constants.LOCALSTORAGE_KEY);
+                if(storage != null)
+                {
+                    storage = JSON.parse(storage);
+                    if(storage.saves["1"] != null)
+                    {
+                        this.savegameLabel1.text = "Save Slot A\n"+storage.saves["1"].timestamp;
+                    }
+                    if(storage.saves["2"] != null)
+                    {
+                        this.savegameLabel2.text = "Save Slot B\n"+storage.saves["2"].timestamp;
+                    }
+                    if(storage.saves["3"] != null)
+                    {
+                        this.savegameLabel3.text = "Save Slot C\n"+storage.saves["3"].timestamp;
+                    }
+                }
+                this.showGroup(this.savegameGroup);
                 break;
                 
             case "Load Game":
@@ -294,6 +432,9 @@ Adventurous.PauseMenu.prototype =
                 break;
                 
             case "Quit":
+                var clickSound = game.add.audio(Adventurous.Constants.MENU_BUTTON_SOUND);
+                clickSound.volume = Adventurous.options.soundVolume;
+                clickSound.play();
                 game.state.start('MainMenu');
                 break;
                 
@@ -308,6 +449,7 @@ Adventurous.PauseMenu.prototype =
         game.world.bringToTop(this.menuGroup);
         game.world.bringToTop(this.helpGroup);
         game.world.bringToTop(this.optionsGroup);
+        game.world.bringToTop(this.savegameGroup);
     },
     
     hideGroups: function()
@@ -315,10 +457,15 @@ Adventurous.PauseMenu.prototype =
         this.menuGroup.visible = false;
         this.helpGroup.visible = false;
         this.optionsGroup.visible = false;
+        this.savegameGroup.visible = false;
     },
     
     showGroup: function(group)
     {
+        var clickSound = game.add.audio(Adventurous.Constants.MENU_BUTTON_SOUND);
+        clickSound.volume = Adventurous.options.soundVolume;
+        clickSound.play();
+        
         this.hideGroups();
         group.visible = true;
     }

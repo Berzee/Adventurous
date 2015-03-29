@@ -63,6 +63,24 @@ Adventurous.Util =
         savegame.flags = Adventurous.flags;
         savegame.options = Adventurous.options;
         savegame.data = currentState.toSaveObject();
+        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+        var date = new Date();
+        var timestamp = days[date.getDay()] + " " + months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+        var hours = date.getHours();
+        var ampm = "am";
+        if(hours > 11)
+        {
+            ampm = "pm";
+        }
+        if(date.getHours() > 12)
+        {
+            hours -= 12;
+        }
+        timestamp += "\n" + hours + ":" + date.getMinutes() + ampm;
+        
+        savegame.timestamp = timestamp;
+        
         if(Adventurous.backgroundMusic != null)
         {
             savegame.backgroundMusic = Adventurous.backgroundMusic.name;

@@ -33,6 +33,11 @@ Adventurous.Boot.prototype =
 
 	create: function ()
     {
+        if(game.device.firefox)
+        {
+            Adventurous.Constants.BROWSER_LABEL_Y_OFFSET = 4;
+        }
+        
 		this.game.input.maxPointers = 1;
 
 	    if (this.game.device.desktop)

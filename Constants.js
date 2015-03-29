@@ -5,6 +5,7 @@ Adventurous.Constants =
     HAS_VOICE: true,
     
     MAIN_MENU_MUSIC: "goblinking",
+    MENU_BUTTON_SOUND: "button",
     
     TILE_SIZE : 16,
     INVERSE_TILE_SIZE : 1/16,
@@ -85,5 +86,7 @@ Adventurous.Constants =
     PAUSE_MENU_FIRST_ITEM_Y_POS: 60,
     PAUSE_MENU_LINE_HEIGHT: 60,
     MAIN_MENU_FIRST_ITEM_Y_POS: 210,
-    MAIN_MENU_LINE_HEIGHT: 60
+    MAIN_MENU_LINE_HEIGHT: 60,
+    PAUSE_MENU_WIDTH: 256,
+    BROWSER_LABEL_Y_OFFSET: 0
 }

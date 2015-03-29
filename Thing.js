@@ -538,7 +538,10 @@ Adventurous.Thing.prototype =
             this.setLabelText('\"'+speech.text+'\"',this.label);
             this.showLabel(this.label);
         }
-        speech.audio.play('',0,Adventurous.options.soundVolume);
+        if(game.cache.getKeys(Phaser.Cache.SOUND).indexOf(speech.audio.name) != -1)
+        {
+            speech.audio.play('',0,Adventurous.options.soundVolume);
+        }
         this.talkTime = 0;
         this.dialogueTime = Adventurous.Util.calculateDialogueMinTime(speech.text);
         this.destinationThing = null;
@@ -610,7 +613,7 @@ Adventurous.Thing.prototype =
     {
         var align = "center";
         var x = this.sprite.body.center.x-label.getAt(0).width/2;
-        var y = this.sprite.body.y - label.getAt(0).height * 1.25;
+        var y = this.sprite.body.y - label.getAt(0).height * 1.25 + Adventurous.Constants.BROWSER_LABEL_Y_OFFSET;
         if(x < 5)
         {
             x = 5;

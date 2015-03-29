@@ -1,11 +1,11 @@
-Adventurous.ToggleButton = function (x,y,enabled)
+Adventurous.ToggleButton = function (x,y,selected)
 {
-    this.enabled = enabled;
+    this.selected = selected;
     this.justChanged = false;
     this.sprite = game.add.sprite(x,y,"toggle_button");
     this.sprite.animations.add("off",[0]);
     this.sprite.animations.add("on",[1]);    
-    if(this.enabled)
+    if(this.selected)
     {
         this.sprite.animations.play("on");
     }
@@ -15,6 +15,8 @@ Adventurous.ToggleButton = function (x,y,enabled)
     }
     
     game.input.onDown.add(this.mouseDown, this);
+    
+    this.enabled = true;
 };
 
 Adventurous.ToggleButton.prototype =
@@ -22,7 +24,7 @@ Adventurous.ToggleButton.prototype =
     
     mouseDown: function()
     {
-        if(this.sprite.visible)
+        if(this.sprite.visible && this.enabled)
         {
             if(Adventurous.Util.isMouseOverObject(this.sprite))
             {
@@ -33,9 +35,13 @@ Adventurous.ToggleButton.prototype =
     
     toggle: function()
     {
+        var clickSound = game.add.audio(Adventurous.Constants.MENU_BUTTON_SOUND);
+        clickSound.volume = Adventurous.options.soundVolume;
+        clickSound.play();
+        
         this.justChanged = true;
-        this.enabled = !this.enabled;
-        if(this.enabled)
+        this.selected = !this.selected;
+        if(this.selected)
         {
             this.sprite.animations.play("on");
         }
@@ -45,11 +51,14 @@ Adventurous.ToggleButton.prototype =
         }
     },
     
-    setEnabled: function(enabled)
+    setSelected: function(selected,ignoreJustChanged)
     {
-        this.justChanged = true;
-        this.enabled = enabled;
-        if(this.enabled)
+        if(ignoreJustChanged != true)
+        {
+            this.justChanged = true;
+        }
+        this.selected = selected;
+        if(this.selected)
         {
             this.sprite.animations.play("on");
         }
