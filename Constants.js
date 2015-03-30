@@ -2,7 +2,7 @@ Adventurous.Constants =
 {
     GAME_NAME: "The Secret of Gargoyle Manor",
     LOCALSTORAGE_KEY: "Adventurous_The Secret of Gargoyle Manor_localStorage",
-    HAS_VOICE: true,
+    HAS_VOICE: false,
     
     MAIN_MENU_MUSIC: "goblinking",
     MENU_BUTTON_SOUND: "button",
@@ -85,8 +85,23 @@ Adventurous.Constants =
     
     PAUSE_MENU_FIRST_ITEM_Y_POS: 60,
     PAUSE_MENU_LINE_HEIGHT: 60,
-    MAIN_MENU_FIRST_ITEM_Y_POS: 210,
+    MAIN_MENU_FIRST_ITEM_Y_POS: 150,
     MAIN_MENU_LINE_HEIGHT: 60,
     PAUSE_MENU_WIDTH: 256,
-    BROWSER_LABEL_Y_OFFSET: 0
+    BROWSER_LABEL_Y_OFFSET: 0,
+    
+    HELP_TEXT: "This game is very simple\nto play!\n\nLEFT CLICK to use things.\n\nRIGHT CLICK to look at\nthings.\n\nTo open your inventory,\npress the \"i\" key.\n\nHave fun!",
+    
+    CREDITS_TEXT: "THE SECRET OF GARGOYLE MANOR\n"+
+                  "a computer entertainment program from Skyfort Games\n\n"+
+                  "Music:\n"+
+                  "    \"The Path of the Goblin King\", \"Life of Riley\", \"Industrial Music Box\"\n    by Kevin MacLeod (incompetech.com)\n"+
+                  "    Licensed under Creative Commons: By Attribution 3.0\n"+
+                  "    http://creativecommons.org/licenses/by/3.0/\n\n"+
+                  "Sound effects:\n"+
+                  "    #GameAudioGDC bundle from sonniss.com\n"+
+                  "    Wind sound effect by medialint at freesound.org\n\n"+
+                  "Fonts from dafont.com:\n"+
+                  "    Alte Haas Grotesk Bold by yann le coroller\n\n"+
+                  "Created with the Adventurous Engine (adventurous.website.site)"
 }

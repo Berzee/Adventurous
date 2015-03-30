@@ -8,11 +8,18 @@ Adventurous.MainMenu.prototype =
 
 	create: function ()
     {
-		this.add.sprite(0, 0, 'title_background');
+		this.background = this.add.sprite(0, 0, 'title_background');
+        
+        this.creditsBackground = this.add.sprite(0, 0, 'credits_background');
+        this.creditsBackground.visible = false;
         
         this.menuGroup = game.add.group();
         
-        this.playLabel = game.add.text(game.width/2, Adventurous.Constants.MAIN_MENU_FIRST_ITEM_Y_POS+Adventurous.Constants.BROWSER_LABEL_Y_OFFSET, "New Game", Adventurous.Constants.MAIN_MENU_LABEL_STYLE);
+        this.helpLabel = game.add.text(game.width/2, Adventurous.Constants.MAIN_MENU_FIRST_ITEM_Y_POS+Adventurous.Constants.BROWSER_LABEL_Y_OFFSET, "How to Play", Adventurous.Constants.MAIN_MENU_LABEL_STYLE);
+        this.helpLabel.x -= Math.floor(this.helpLabel.width/2);
+        this.menuGroup.add(this.helpLabel);
+        
+        this.playLabel = game.add.text(game.width/2, this.helpLabel.y+Adventurous.Constants.MAIN_MENU_LINE_HEIGHT, "New Game", Adventurous.Constants.MAIN_MENU_LABEL_STYLE);
         this.playLabel.x -= Math.floor(this.playLabel.width/2);
         this.menuGroup.add(this.playLabel);
         
@@ -23,7 +30,20 @@ Adventurous.MainMenu.prototype =
         this.optionsLabel = game.add.text(game.width/2, this.loadLabel.y+Adventurous.Constants.MAIN_MENU_LINE_HEIGHT, "Options", Adventurous.Constants.MAIN_MENU_LABEL_STYLE);
         this.optionsLabel.x -= Math.floor(this.optionsLabel.width/2);
         this.menuGroup.add(this.optionsLabel);
+        
+        this.creditsLabel = game.add.text(game.width/2, this.optionsLabel.y+Adventurous.Constants.MAIN_MENU_LINE_HEIGHT, "Credits", Adventurous.Constants.MAIN_MENU_LABEL_STYLE);
+        this.creditsLabel.x -= Math.floor(this.creditsLabel.width/2);
+        this.menuGroup.add(this.creditsLabel);
+        
+        this.creditsText = game.add.text(10,10,Adventurous.Constants.CREDITS_TEXT, Adventurous.Constants.MAIN_MENU_LABEL_STYLE);
+        this.creditsText.visible = false;
+        
+        this.creditsButton = new Adventurous.Button(game.width/2,game.height-Adventurous.Constants.MAIN_MENU_LINE_HEIGHT,"OK","mainMenu_button",
+                                        Adventurous.Constants.MAIN_MENU_LABEL_STYLE,Adventurous.Constants.SELECTED_MAIN_MENU_LABEL_STYLE);
+        this.creditsButton.buttonGroup.visible = false;
 		
+        this.pauseMenu = new Adventurous.PauseMenu();
+        
         this.cursor = new Adventurous.Cursor();
         
         game.input.onDown.add(this.mouseDown, this);
@@ -44,7 +64,25 @@ Adventurous.MainMenu.prototype =
     {
         if(pointer.button == Adventurous.Constants.LMB)
         {
-            if(this.menuGroup.visible)
+            if(this.pauseMenu.background.visible)
+            {
+                if(this.pauseMenu.helpGroup.visible)
+                {
+                    if(Adventurous.Util.isMouseOverObject(this.pauseMenu.helpButtons[0].background))
+                    {
+                        this.hidePauseMenu();
+                    }
+                }
+                else if(this.pauseMenu.savegameGroup.visible)
+                {
+                    this.pauseMenu.handleSaveGameButtonClicks(true);
+                }
+                else if(this.pauseMenu.optionsGroup.visible)
+                {
+                    this.pauseMenu.handleOptionsButtonClicks(true);
+                }
+            }
+            else if(this.menuGroup.visible)
             {
                 for(var i = 0; i < this.menuGroup.length; i++)
                 {
@@ -55,22 +93,59 @@ Adventurous.MainMenu.prototype =
                     }
                 }
             }
+            else if(this.creditsButton.buttonGroup.visible)
+            {
+                if(Adventurous.Util.isMouseOverObject(this.creditsButton.background))
+                {
+                    this.menuGroup.visible = true;
+                    this.background.visible = true;
+                    this.creditsBackground.visible = false;
+                    this.creditsText.visible = false;
+                    this.creditsButton.buttonGroup.visible = false;
+                }
+            }
         }
+    },
+    
+    hidePauseMenu: function()
+    {
+        var clickSound = game.add.audio(Adventurous.Constants.MENU_BUTTON_SOUND);
+        clickSound.volume = Adventurous.options.soundVolume;
+        clickSound.play();
+        
+        this.pauseMenu.background.visible = false;
+        this.pauseMenu.helpGroup.visible = false;
     },
     
     selectOption: function(option)
     {
         switch(option)
-        {                
+        {     
+            case "How to Play":
+                this.pauseMenu.background.visible = true;
+                this.pauseMenu.showGroup(this.pauseMenu.helpGroup);
+                break;
+                
             case "New Game":
                 this.startGame();
                 break;
                 
             case "Load Game":
-                this.loadGame("test");
+                this.pauseMenu.background.visible = true;
+                this.pauseMenu.showLoadGame();
                 break;
                 
             case "Options":
+                this.pauseMenu.background.visible = true;
+                this.pauseMenu.showGroup(this.pauseMenu.optionsGroup);
+                break;
+                
+            case "Credits":
+                this.menuGroup.visible = false;
+                this.background.visible = false;
+                this.creditsBackground.visible = true;
+                this.creditsText.visible = true;
+                this.creditsButton.buttonGroup.visible = true;
                 break;
 
             default:
@@ -101,6 +176,8 @@ Adventurous.MainMenu.prototype =
     {
         this.cursor.update();
         this.updateLabels();
+        this.pauseMenu.update();
+        this.creditsButton.updateLabel();
 	},
     
     loadGame: function (name)

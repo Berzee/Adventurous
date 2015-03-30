@@ -68,6 +68,11 @@ Adventurous.Util =
         var date = new Date();
         var timestamp = days[date.getDay()] + " " + months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
         var hours = date.getHours();
+        var minutes = date.getMinutes();
+        if(minutes < 10)
+        {
+            minutes = "0" + minutes;
+        }
         var ampm = "am";
         if(hours > 11)
         {
@@ -77,7 +82,7 @@ Adventurous.Util =
         {
             hours -= 12;
         }
-        timestamp += "\n" + hours + ":" + date.getMinutes() + ampm;
+        timestamp += "\n" + hours + ":" + minutes + ampm;
         
         savegame.timestamp = timestamp;
         
