@@ -1,4 +1,4 @@
-Adventurous = {};
+var Adventurous = {};
 Adventurous.flags = {};
 Adventurous.speeches = {};
 Adventurous.options =

@@ -24,7 +24,7 @@ Adventurous.ToggleButton.prototype =
     
     mouseDown: function()
     {
-        if(this.sprite.visible && this.enabled)
+        if(this.sprite.visible && this.sprite.parent.visible && this.enabled)
         {
             if(Adventurous.Util.isMouseOverObject(this.sprite))
             {
