@@ -289,12 +289,12 @@ Adventurous.Game.prototype =
         for(var i = 0; i < this.scene.things.length; i++)
         {
             var thing = this.scene.things[i];
-            if(thing.isVisible() && !thing.isNoninteractive && Phaser.Rectangle.contains(thing.sprite.body,game.input.mousePointer.x,game.input.mousePointer.y))
+            if(thing.isVisible() && !thing.isNoninteractive && Phaser.Rectangle.contains(thing.sprite.body,game.input.activePointer.x,game.input.activePointer.y))
             {
                 //select the thing closest to the foreground
                 if(this.thingUnderMouse == null || this.scene.things[i].sprite.body.bottom > this.thingUnderMouse.sprite.body.bottom)
                 {
-                    var pixelAlpha = thing.bitmapData.getPixel(game.input.mousePointer.x-thing.sprite.body.x, game.input.mousePointer.y-thing.sprite.body.y).a;
+                    var pixelAlpha = thing.bitmapData.getPixel(game.input.activePointer.x-thing.sprite.body.x, game.input.activePointer.y-thing.sprite.body.y).a;
                     
                     if(pixelAlpha > 0)
                     {

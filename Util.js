@@ -39,8 +39,8 @@ Adventurous.Util =
     
     isMouseOverObject: function(obj)
     {
-        return (game.input.mousePointer.x >= obj.x-obj.width*obj.anchor.x && game.input.mousePointer.x <= obj.x + obj.width - obj.width*obj.anchor.x &&
-                game.input.mousePointer.y >= obj.y && game.input.mousePointer.y <= obj.y + obj.height);
+        return (game.input.activePointer.x >= obj.x-obj.width*obj.anchor.x && game.input.activePointer.x <= obj.x + obj.width - obj.width*obj.anchor.x &&
+                game.input.activePointer.y >= obj.y && game.input.activePointer.y <= obj.y + obj.height);
     },
     
     calculateDialogueMinTime: function(text)

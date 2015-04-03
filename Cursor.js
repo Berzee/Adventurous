@@ -1,6 +1,6 @@
 Adventurous.Cursor = function ()
 {
-    this.sprite = game.add.sprite(game.input.mousePointer.x,game.input.mousePointer.y,'cursor');
+    this.sprite = game.add.sprite(game.input.activePointer.x,game.input.activePointer.y,'cursor');
     this.item = null;
 };
 
@@ -8,8 +8,8 @@ Adventurous.Cursor.prototype =
 {
 	update: function ()
     {        
-        this.sprite.x = game.input.mousePointer.x;
-        this.sprite.y = game.input.mousePointer.y;
+        this.sprite.x = game.input.activePointer.x;
+        this.sprite.y = game.input.activePointer.y;
 	},
     
     setItem: function(item)
@@ -18,11 +18,11 @@ Adventurous.Cursor.prototype =
         this.sprite.destroy();
         if(item != null)
         {
-            this.sprite = game.add.sprite(game.input.mousePointer.x,game.input.mousePointer.y,this.item.imageName+'_cursor');
+            this.sprite = game.add.sprite(game.input.activePointer.x,game.input.activePointer.y,this.item.imageName+'_cursor');
         }
         else
         {
-            this.sprite = game.add.sprite(game.input.mousePointer.x,game.input.mousePointer.y,'cursor');
+            this.sprite = game.add.sprite(game.input.activePointer.x,game.input.activePointer.y,'cursor');
         }
     },
     

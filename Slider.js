@@ -23,10 +23,10 @@ Adventurous.Slider.prototype =
     {   
         if(this.dragging)
         {
-            this.slider.x += (game.input.mousePointer.x-this.prevX);
+            this.slider.x += (game.input.activePointer.x-this.prevX);
             this.slider.x = Math.min(this.background.x + this.background.width - this.slider.width,Math.max(this.slider.x,this.background.x));
 
-            this.prevX = game.input.mousePointer.x;
+            this.prevX = game.input.activePointer.x;
         }
 	},
     
@@ -37,7 +37,7 @@ Adventurous.Slider.prototype =
             if(Adventurous.Util.isMouseOverObject(this.slider))
             {
                 this.dragging = true;
-                this.prevX = game.input.mousePointer.x;
+                this.prevX = game.input.activePointer.x;
             }
             else
             {

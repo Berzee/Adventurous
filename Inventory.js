@@ -225,7 +225,7 @@ Adventurous.Inventory.prototype =
         this.itemUnderMouse = null;
         for(var i = 0; i < this.items.length; i++)
         {
-            if(Phaser.Rectangle.contains(this.items[i].icon.body,game.input.mousePointer.x,game.input.mousePointer.y))
+            if(Phaser.Rectangle.contains(this.items[i].icon.body,game.input.activePointer.x,game.input.activePointer.y))
             {
                 this.itemUnderMouse = this.items[i];
             }
@@ -339,7 +339,7 @@ Adventurous.Inventory.prototype =
                                         this.background.body.y+Adventurous.Constants.INVENTORY_MARGIN,
                                         this.background.body.width-Adventurous.Constants.INVENTORY_MARGIN*2-cursorWidth,
                                         this.background.body.height-Adventurous.Constants.INVENTORY_MARGIN*2-cursorHeight);
-        return (Phaser.Rectangle.contains(rect,game.input.mousePointer.x,game.input.mousePointer.y));
+        return (Phaser.Rectangle.contains(rect,game.input.activePointer.x,game.input.activePointer.y));
     },
     
     toSaveObject: function()
