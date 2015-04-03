@@ -570,6 +570,18 @@ Adventurous.PauseMenu.prototype =
                 this.savegameLabel3.setStyle(Adventurous.Constants.DISABLED_LABEL_STYLE);
             }
         }
+        else
+        {
+            this.savegameToggle1.setSelected(false,true);
+            this.savegameToggle2.setSelected(false,true);
+            this.savegameToggle3.setSelected(false,true);
+            this.savegameToggle1.enabled = false;
+            this.savegameToggle2.enabled = false;
+            this.savegameToggle3.enabled = false;
+            this.savegameLabel1.setStyle(Adventurous.Constants.DISABLED_LABEL_STYLE);
+            this.savegameLabel2.setStyle(Adventurous.Constants.DISABLED_LABEL_STYLE);
+            this.savegameLabel3.setStyle(Adventurous.Constants.DISABLED_LABEL_STYLE);
+        }
         this.savegameButtons[0].label.text = "Load";
         this.showGroup(this.savegameGroup);
     },
