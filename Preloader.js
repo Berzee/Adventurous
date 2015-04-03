@@ -10,7 +10,8 @@ Adventurous.Preloader.prototype =
 	preload: function ()
     {
 		this.background = this.add.sprite(0, 0, 'preloader_background');
-		this.preloadBar = this.add.sprite(0, 550, 'preloader_bar');
+		this.preloadBar = this.add.sprite(0, 0, 'preloader_bar');
+        this.preloadBar.y = game.height - this.preloadBar.height;
 		this.load.setPreloadSprite(this.preloadBar);
         
         var preload = JSON.parse(game.cache.getText('preload'));

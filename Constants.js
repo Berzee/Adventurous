@@ -85,15 +85,15 @@ Adventurous.Constants =
     
     PAUSE_MENU_FIRST_ITEM_Y_POS: 60,
     PAUSE_MENU_LINE_HEIGHT: 60,
-    MAIN_MENU_FIRST_ITEM_Y_POS: 150,
-    MAIN_MENU_LINE_HEIGHT: 60,
+    MAIN_MENU_FIRST_ITEM_Y_POS: 175,
+    MAIN_MENU_LINE_HEIGHT: 50,
     PAUSE_MENU_WIDTH: 256,
     BROWSER_LABEL_Y_OFFSET: 0,
     
     HELP_TEXT: "This game is very simple\nto play!\n\nLEFT CLICK to use things.\n\nRIGHT CLICK to look at\nthings.\n\nTo open your inventory,\npress the \"i\" key.\n\nHave fun!",
     
     CREDITS_TEXT: "THE SECRET OF GARGOYLE MANOR\n"+
-                  "a computer entertainment program from Skyfort Games\n\n"+
+                  "an entertainment software from Skyfort Games\n\n"+
                   "Music:\n"+
                   "    \"The Path of the Goblin King\", \"Life of Riley\", \"Industrial Music Box\"\n    by Kevin MacLeod (incompetech.com)\n"+
                   "    Licensed under Creative Commons: By Attribution 3.0\n"+
