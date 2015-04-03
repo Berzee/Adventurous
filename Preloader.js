@@ -45,7 +45,12 @@ Adventurous.Preloader.prototype =
                     break;
                     
                 case "audio":
-                    this.load.audio(name, ["audio/"+name+list[i].ext]);
+                    var formats = [];
+                    for(var j = 0; j < list[i].ext.length; j++)
+                    {
+                        formats[j] = "audio/"+name+list[i].ext[j];
+                    }
+                    this.load.audio(name, formats);
                     break;
                                    
                 case "tilemap":
