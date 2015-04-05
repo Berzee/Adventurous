@@ -90,7 +90,7 @@ Adventurous.Constants =
     PAUSE_MENU_WIDTH: 256,
     BROWSER_LABEL_Y_OFFSET: 0,
     
-    HELP_TEXT: "This game is very simple\nto play!\n\nLEFT CLICK to use things.\n\nRIGHT CLICK to look at\nthings.\n\nTo open your inventory,\npress the \"i\" key.\n\nHave fun!",
+    HELP_TEXT: "This game is very simple\nto play!\n\nLEFT CLICK to use things.\n\nRIGHT CLICK to look at\nthings.\n\nTo open your Inventory,\npress the \"i\" key.\n\nTo Save or Load, open\nthe menu with ESCAPE.\n\nHave fun!",
     
     CREDITS_TEXT: "THE SECRET OF GARGOYLE MANOR\n"+
                   "an entertainment software from Skyfort Games\n\n"+
@@ -102,6 +102,5 @@ Adventurous.Constants =
                   "    #GameAudioGDC bundle from sonniss.com\n"+
                   "    Wind sound effect by medialint at freesound.org\n\n"+
                   "Fonts from dafont.com:\n"+
-                  "    Alte Haas Grotesk Bold by yann le coroller\n\n"+
-                  "Created with the Adventurous Engine (adventurous.website.site)"
+                  "    Alte Haas Grotesk Bold by yann le coroller\n\n"
 }

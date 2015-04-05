@@ -376,6 +376,7 @@ Adventurous.Effects.prototype =
                 break;
                 
             case Adventurous.Constants.ACTION_MAIN_MENU:
+                currentState.currentConversation = null;
                 game.state.start('MainMenu');
                 break;
         }

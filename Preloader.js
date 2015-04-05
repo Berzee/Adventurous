@@ -48,7 +48,10 @@ Adventurous.Preloader.prototype =
                     var formats = [];
                     for(var j = 0; j < list[i].ext.length; j++)
                     {
-                        formats[j] = "audio/"+name+list[i].ext[j];
+                        if(!game.device.firefox || list[i].ext[j] != ".m4a")
+                        {
+                            formats[formats.length] = "audio/"+name+list[i].ext[j];
+                        }
                     }
                     this.load.audio(name, formats);
                     break;

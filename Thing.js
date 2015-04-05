@@ -766,7 +766,11 @@ Adventurous.Thing.prototype =
                 
                 var scaleDiff = upperScale - lowerScale;
                 var scalePosDiff = upperScalePos - lowerScalePos;
-                var newScale = lowerScale + scaleDiff * (this.sprite.y - lowerScalePos) / scalePosDiff;
+                var newScale = lowerScale;
+                if(scalePosDiff != 0)
+                {
+                    newScale = lowerScale + scaleDiff * (this.sprite.y - lowerScalePos) / scalePosDiff;
+                }
                 this.setScale(newScale);
             }
             else

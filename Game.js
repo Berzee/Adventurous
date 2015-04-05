@@ -123,6 +123,8 @@ Adventurous.Game.prototype =
                         if(this.thingUnderMouse.usableZone == "any")
                         {
                             this.player.stopTalking();
+                            this.player.stopMoving(true);
+                            this.player.face(this.thingUnderMouse);
                             this.player.destinationThing = this.thingUnderMouse;
                             if(this.cursor.item == null)
                             {

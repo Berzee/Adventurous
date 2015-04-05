@@ -63,7 +63,7 @@ Adventurous.PauseMenu = function ()
     label.x -= Math.floor(label.width/2);
     this.helpGroup.add(label);
     
-    y = this.background.height - y - Adventurous.Constants.PAUSE_MENU_LINE_HEIGHT;
+    y = label.y + label.height + 20;
     button = new Adventurous.Button(this.background.x,y,"OK","pauseMenu_button",
                                         Adventurous.Constants.DIALOGUE_LABEL_STYLE,Adventurous.Constants.SELECTED_DIALOGUE_LABEL_STYLE);
     this.helpButtons[this.helpButtons.length] = button;
@@ -219,7 +219,7 @@ Adventurous.PauseMenu.prototype =
     
     togglePauseMenu: function()
     {
-        if(currentState != null)
+        if(typeof currentState != "undefined" && currentState != null)
         {
             if(!currentState.inventory.background.visible && currentState.currentConversation == null)
             {

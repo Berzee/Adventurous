@@ -3,7 +3,6 @@ Adventurous.flags = {};
 Adventurous.speeches = {};
 Adventurous.options =
     {
-        "mute":false,
         "soundVolume":1,
         "musicVolume":0.5,
         "voiceEnabled":true,
